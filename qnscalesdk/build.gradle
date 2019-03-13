@@ -18,6 +18,9 @@ android {
         }
     }
 
+    packagingOptions {
+        doNotStrip '*/*/*.so'
+    }
 }
 
 dependencies {
@@ -27,8 +30,5 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     compile "com.android.support:support-v4:$ANDROID_SUPPORT_VERSION"
-    //    compile ("com.github.YolandaQingniu:QNScaleDecoder-Android:V1.0.0") {
-    //        exclude module: "support-v4"
-    //    }
     compile files('libs/qnsdk-0.5.6.jar')
 }
