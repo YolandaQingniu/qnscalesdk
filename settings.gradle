@@ -1,1 +1,1 @@
-include ':qnscalesdk'
+include ':qnscalesdk', ':app'
