@@ -30,5 +30,5 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     compile "com.android.support:support-v4:$ANDROID_SUPPORT_VERSION"
-    compile files('libs/qnsdk-0.5.7.jar')
+    compile files('libs/qnsdk-0.5.8.jar')
 }
