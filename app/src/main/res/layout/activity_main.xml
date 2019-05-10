@@ -22,8 +22,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
             android:text="设置"
             android:textSize="16sp"/>
     </RelativeLayout>
@@ -34,21 +36,31 @@
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         android:text="APP_ID : 123456789"/>
-
-    <EditText
-        android:id="@+id/qr_data_et"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="二维码扫描的数据"/>
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/qr_data_et"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="二维码扫描的数据"/>
+        <Button
+            android:id="@+id/scanQrcode"
+            android:layout_width="wrap_content"
+            android:text="二维码扫描"
+            android:layout_marginRight="20dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
 
     <EditText
         android:id="@+id/qr_time_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="二维码扫描的有效时间，默认0s,表示不检验有效时间"
-        android:lines="1"
-        android:text="0"
-        android:textSize="12sp"/>
+        android:hint="二维码扫描的有效时间，默认0s，表示不校验有效时间"
+        android:text="0"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -94,6 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
             android:text="点击连接设备"/>
 
     </LinearLayout>
@@ -115,6 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
             android:layout_weight="2"
             android:gravity="center_horizontal"
             android:text="名称"/>
@@ -125,6 +139,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
             android:layout_weight="2"
             android:gravity="center_horizontal"
             android:text="型号"/>
@@ -135,6 +150,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
             android:layout_weight="4"
             android:gravity="center_horizontal"
             android:text="mac地址"/>
@@ -145,6 +161,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="强度"/>

@@ -13,4 +13,6 @@ public class UserConst {
 
     public static final String CONFIG = "qnconfig"; //连接的设备
 
+    public static final String WIFI_CONFIG = "WIFI_CONFIG"; //wifi 配置信息
+
 }
