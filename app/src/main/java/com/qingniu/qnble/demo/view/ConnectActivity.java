@@ -1,26 +1,33 @@
 package com.qingniu.qnble.demo.view;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qingniu.qnble.demo.R;
+import com.qingniu.qnble.demo.ScanQrActivity;
 import com.qingniu.qnble.demo.bean.User;
+import com.qingniu.qnble.demo.util.AndroidPermissionCenter;
+import com.qingniu.qnble.demo.util.ToastMaker;
 import com.qingniu.qnble.demo.util.UserConst;
-import com.qingniu.scale.config.DecoderAdapterManager;
-import com.qingniu.scale.config.DecoderConfigAdapter;
-import com.qingniu.scale.model.ScaleInfo;
+import com.qingniu.qnble.utils.QNLogUtils;
+import com.qingniu.scale.constant.DecoderConst;
 import com.yolanda.health.qnblesdk.constant.QNIndicator;
 import com.yolanda.health.qnblesdk.constant.QNScaleStatus;
 import com.yolanda.health.qnblesdk.constant.UserGoal;
@@ -34,12 +41,17 @@ import com.yolanda.health.qnblesdk.out.QNScaleData;
 import com.yolanda.health.qnblesdk.out.QNScaleItemData;
 import com.yolanda.health.qnblesdk.out.QNScaleStoreData;
 import com.yolanda.health.qnblesdk.out.QNUser;
+import com.yolanda.health.qnblesdk.out.QNWiFiConfig;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.qingniu.qnble.demo.R.id.connectBtn;
 
@@ -52,10 +64,19 @@ import static com.qingniu.qnble.demo.R.id.connectBtn;
 
 public class ConnectActivity extends AppCompatActivity implements View.OnClickListener {
 
+
+
     public static Intent getCallIntent(Context context, User user, QNBleDevice device) {
         return new Intent(context, ConnectActivity.class)
                 .putExtra(UserConst.USER, user)
                 .putExtra(UserConst.DEVICE, device);
+    }
+
+    public static Intent getCallIntent(Context context, User user, QNBleDevice device, QNWiFiConfig qnWiFiConfig) {
+        return new Intent(context, ConnectActivity.class)
+                .putExtra(UserConst.USER, user)
+                .putExtra(UserConst.DEVICE, device)
+                .putExtra(UserConst.WIFI_CONFIG, qnWiFiConfig);
     }
 
     @BindView(connectBtn)
@@ -68,14 +89,27 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
     TextView mBackTv;
     @BindView(R.id.listView)
     ListView mListView;
+    @BindView(R.id.stroteDataTest)
+    Button stroteDataTest;
+    @BindView(R.id.threshold)
+    EditText threshold;
+    @BindView(R.id.setThreshold)
+    Button setThreshold;
+    @BindView(R.id.hmacTest)
+    TextView hmacTest;
+    @BindView(R.id.testHmac)
+    Button testHmac;
 
     private QNBleDevice mBleDevice;
     private List<QNScaleItemData> mDatas = new ArrayList<>();
     private QNBleApi mQNBleApi;
 
     private User mUser;
+    private QNWiFiConfig mQnWiFiConfig;
 
     private boolean mIsConnected;
+
+    private QNScaleData preQNScaleData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -147,12 +181,41 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void connectQnDevice(QNBleDevice device) {
-        mQNBleApi.connectDevice(device, createQNUser(), new QNResultCallback() {
-            @Override
-            public void onResult(int code, String msg) {
-                Log.d("ConnectActivity", "连接设备返回:" + msg);
-            }
-        });
+        if (null != mQnWiFiConfig) {
+            mQNBleApi.registerWiFiBleDevice(device, new QNResultCallback() {
+                @Override
+                public void onResult(int code, String msg) {
+                    Log.e("ConnectActivity", "注册结果" + code + ",msg:" + msg);
+                    final int mCode = code;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mCode == 0) {
+                                ToastMaker.show(ConnectActivity.this, "设备注册成功");
+                            } else {
+                                ToastMaker.show(ConnectActivity.this, "设备注册失败");
+                            }
+                        }
+                    });
+
+
+                }
+            });
+            mQNBleApi.connectDeviceSetWiFi(device, createQNUser(), mQnWiFiConfig, new QNResultCallback() {
+                @Override
+                public void onResult(int code, String msg) {
+                    QNLogUtils.log("ConnectActivity", "wifi 配置code:" + code + ",msg:" + msg);
+                    // ToastMaker.show(ConnectActivity.this, code + ":" + msg);
+                }
+            });
+        } else {
+            mQNBleApi.connectDevice(device, createQNUser(), new QNResultCallback() {
+                @Override
+                public void onResult(int code, String msg) {
+                    Log.d("ConnectActivity", "连接设备返回:" + msg);
+                }
+            });
+        }
     }
 
     private QNUser createQNUser() {
@@ -207,7 +270,8 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         return mQNBleApi.buildUser(mUser.getUserId(),
-                mUser.getHeight(), mUser.getGender(), mUser.getBirthDay(), mUser.getAthleteType(), userShape, userGoal, new QNResultCallback() {
+                mUser.getHeight(), mUser.getGender(), mUser.getBirthDay(), mUser.getAthleteType(),
+                userShape, userGoal, mUser.getClothesWeight(), new QNResultCallback() {
                     @Override
                     public void onResult(int code, String msg) {
                         Log.d("ConnectActivity", "创建用户信息返回:" + msg);
@@ -234,6 +298,8 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                     String value = fatValue.getValue() + "";
                     Log.d("ConnectActivity", "收到皮下脂肪数据:" + value);
                 }
+                preQNScaleData =data;
+                Log.d("ConnectActivity", "加密hmac为:" + data.getHmac());
 //                Log.d("ConnectActivity", "收到体脂肪:"+data.getItem(QNIndicator.TYPE_BODYFAT).getValue());
             }
 
@@ -254,6 +320,9 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
             public void onGetElectric(QNBleDevice device, int electric) {
                 String text = "收到电池电量百分比:" + electric;
                 Log.d("ConnectActivity", text);
+                if (electric == DecoderConst.NONE_BATTERY_VALUE) {//获取电池信息失败
+                    return;
+                }
                 Toast.makeText(ConnectActivity.this, text, Toast.LENGTH_SHORT).show();
             }
         });
@@ -264,6 +333,10 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         if (intent != null) {
             mBleDevice = intent.getParcelableExtra(UserConst.DEVICE);
             mUser = intent.getParcelableExtra(UserConst.USER);
+            mQnWiFiConfig = intent.getParcelableExtra(UserConst.WIFI_CONFIG);
+            if(null==mQnWiFiConfig){
+                stroteDataTest.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -387,9 +460,25 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
             }
             case QNScaleStatus.STATE_MEASURE_COMPLETED: {
                 stateString = "测量完成";
+                hmacTest.setText("");
                 btnString = "断开连接";
                 break;
             }
+            case QNScaleStatus.STATE_WIFI_BLE_START_NETWORK:
+                stateString = "开始设置WiFi";
+                btnString = "断开连接";
+                Log.d("ConnectActivity", "开始设置WiFi");
+                break;
+            case QNScaleStatus.STATE_WIFI_BLE_NETWORK_FAIL:
+                stateString = "设置WiFi失败";
+                btnString = "断开连接";
+                Log.d("ConnectActivity", "设置WiFi失败");
+                break;
+            case QNScaleStatus.STATE_WIFI_BLE_NETWORK_SUCCESS:
+                stateString = "设置WiFi成功";
+                btnString = "断开连接";
+                Log.d("ConnectActivity", "设置WiFi成功");
+                break;
             default: {
                 stateString = "连接已断开";
                 btnString = "连接";
@@ -426,16 +515,46 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         if (mBleDevice == null || mUser == null) {
             return;
         }
-        mQNBleApi.connectDevice(mBleDevice, createQNUser(), new QNResultCallback() {
-            @Override
-            public void onResult(int code, String msg) {
-                Log.d("ConnectActivity", "连接设备返回:" + msg);
-                if (code == 0) {
-                    mIsConnected = true;
-                }
-            }
-        });
+        if (null != mQnWiFiConfig) {
+            mQNBleApi.registerWiFiBleDevice(mBleDevice, new QNResultCallback() {
+                @Override
+                public void onResult(int code, String msg) {
+                    Log.e("ConnectActivity", "注册结果" + code + ",msg:" + msg);
+                    final int mCode = code;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mCode == 0) {
+                                ToastMaker.show(ConnectActivity.this, "设备注册成功");
+                            } else {
+                                ToastMaker.show(ConnectActivity.this, "设备注册失败");
+                            }
+                        }
+                    });
 
+                }
+            });
+            mQNBleApi.connectDeviceSetWiFi(mBleDevice, createQNUser(), mQnWiFiConfig, new QNResultCallback() {
+                @Override
+                public void onResult(int code, String msg) {
+                    QNLogUtils.log("ConnectActivity", "wifi 配置code:" + code + ",msg:" + msg);
+                    if (code == 0) {
+                        mIsConnected = true;
+                    }
+                    // ToastMaker.show(ConnectActivity.this, code + ":" + msg);
+                }
+            });
+        } else {
+            mQNBleApi.connectDevice(mBleDevice, createQNUser(), new QNResultCallback() {
+                @Override
+                public void onResult(int code, String msg) {
+                    Log.d("ConnectActivity", "连接设备返回:" + msg);
+                    if (code == 0) {
+                        mIsConnected = true;
+                    }
+                }
+            });
+        }
     }
 
     private void doDisconnect() {
@@ -445,5 +564,89 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                 Log.d("ConnectActivity", "断开连接设备返回:" + msg);
             }
         });
+    }
+
+    @OnClick({R.id.stroteDataTest, R.id.setThreshold, R.id.testHmac})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.stroteDataTest:
+                //{"weight"=>"25.35", "measure_time"=>"2019-05-06 14:02:51", "mac"=>"F0:FE:6B:CB:75:6A", "model_id"=>"0005", "sign"=>"3F828A0207EB762F0D12E1ED5345AF7D6907304A74A45990B254256AC08DAA76EEA778E4B50ACE92D47DA72DD7257F82734C33A56721D797FD932B3741E5C730F2901F7EFAA1755DD0683BABD0959BB1E82201C3B50B3E8A5360A3D57550CF446DC834B8FA2F0D16DA4C0797CC1C308E4253413D4AB90DC4093F8065199ABE8AB0C9D06E3172E511C54C7E5095BB92C753070DC0CEB5D64785C4577952B50465"}
+                QNScaleStoreData qnScaleStoreData =new QNScaleStoreData();
+                qnScaleStoreData.setUser(createQNUser());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    Date date =simpleDateFormat.parse("2019-05-06 14:02:51");
+                    qnScaleStoreData.buildStoreData(25.35,date , "F0:FE:6B:CB:75:6A",
+                            "3F828A0207EB762F0D12E1ED5345AF7D6907304A74A45990B254256AC08DAA76EEA778E4B50ACE92D47DA72DD7257F82734C33A56721D797FD932B3741E5C730F2901F7EFAA1755DD0683BABD0959BB1E82201C3B50B3E8A5360A3D57550CF446DC834B8FA2F0D16DA4C0797CC1C308E4253413D4AB90DC4093F8065199ABE8AB0C9D06E3172E511C54C7E5095BB92C753070DC0CEB5D64785C4577952B50465",
+                            new QNResultCallback() {
+                                @Override
+                                public void onResult(int code, String msg) {
+                                    Log.e("buildStoreData","code="+code+",msg="+msg);
+                                }
+                            });
+                    QNScaleData qnScaleData = qnScaleStoreData.generateScaleData();
+                    onReceiveScaleData(qnScaleData);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+            case R.id.setThreshold:
+                if(TextUtils.isEmpty(threshold.getText().toString())){
+                    ToastMaker.show(this,"请输入体脂变化控制");
+                    return;
+                }
+                if(null==preQNScaleData){
+                    ToastMaker.show(this,"请先完成一次体重测量！");
+                    return;
+                }
+                if(!TextUtils.isEmpty(hmacTest.getText().toString())){
+                    preQNScaleData.setFatThreshold(hmacTest.getText().toString(), Double.valueOf(threshold.getText().toString()),
+                            new QNResultCallback() {
+                                @Override
+                                public void onResult(int code, String msg) {
+                                    Log.e("setFatThreshold","code="+code+",msg="+msg);
+                                }
+                            });
+                    hmacTest.setText("设置完成请重新测量体重");
+                }else{
+                    preQNScaleData.setFatThreshold(preQNScaleData.getHmac(), Double.valueOf(threshold.getText().toString()),
+                            new QNResultCallback() {
+                                @Override
+                                public void onResult(int code, String msg) {
+                                    Log.e("setFatThreshold","code="+code+",msg="+msg);
+                                }
+                            });
+                    hmacTest.setText("设置完成请重新测量体重");
+                }
+
+                break;
+            case R.id.testHmac:
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    startActivityForResult(new Intent(ConnectActivity.this, ScanQrActivity.class), 100);
+                } else {
+                    AndroidPermissionCenter.verifyCameraPermissions(this);
+                }
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100) {
+            if (resultCode == 200) {
+                String qrCode = data.getStringExtra("code").trim();
+                Log.e( "二维码：" , qrCode);
+                if (!TextUtils.isEmpty(qrCode)) {
+                    hmacTest.setText(qrCode);
+                } else {
+                    //
+                }
+
+            }
+        }
     }
 }

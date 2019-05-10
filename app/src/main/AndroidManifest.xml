@@ -20,6 +20,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ScanQrActivity"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".view.ScanActivity"
             android:screenOrientation="portrait"/>
