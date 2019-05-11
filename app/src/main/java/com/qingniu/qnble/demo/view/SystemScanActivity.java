@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,16 +24,19 @@ import com.qingniu.qnble.demo.R;
 import com.qingniu.qnble.demo.SettingActivity;
 import com.qingniu.qnble.demo.bean.Config;
 import com.qingniu.qnble.demo.bean.User;
+import com.qingniu.qnble.demo.picker.WIFISetDialog;
 import com.qingniu.qnble.demo.util.AndroidPermissionCenter;
 import com.qingniu.qnble.demo.util.ToastMaker;
 import com.qingniu.qnble.demo.util.UserConst;
 import com.qingniu.qnble.utils.BleUtils;
 import com.qingniu.qnble.utils.QNLogUtils;
+import com.qingniu.scale.constant.ScaleType;
 import com.yolanda.health.qnblesdk.constant.CheckStatus;
 import com.yolanda.health.qnblesdk.listener.QNResultCallback;
 import com.yolanda.health.qnblesdk.out.QNBleApi;
 import com.yolanda.health.qnblesdk.out.QNBleDevice;
 import com.yolanda.health.qnblesdk.out.QNConfig;
+import com.yolanda.health.qnblesdk.out.QNWiFiConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +47,7 @@ import butterknife.OnClick;
 
 public class SystemScanActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
+    private final String TAG = SystemScanActivity.class.getSimpleName();
     @BindView(R.id.scan_measuring)
     TextView mScanMeasuring;
     @BindView(R.id.scan_setting)
@@ -62,6 +67,7 @@ public class SystemScanActivity extends AppCompatActivity implements AdapterView
     private User mUser;
     private Config mConfig;
     private boolean isScanning;
+    private WIFISetDialog wifiSetDialog;
 
     public static Intent getCallIntent(Context context, User user, Config mConfig) {
         return new Intent(context, SystemScanActivity.class)
@@ -94,6 +100,7 @@ public class SystemScanActivity extends AppCompatActivity implements AdapterView
             TextView modelTv = (TextView) convertView.findViewById(R.id.modelTv);
             TextView macTv = (TextView) convertView.findViewById(R.id.macTv);
             TextView rssiTv = (TextView) convertView.findViewById(R.id.rssiTv);
+            ImageView deviceType = convertView.findViewById(R.id.deviceType);
 
             QNBleDevice scanResult = devices.get(position);
 
@@ -101,7 +108,11 @@ public class SystemScanActivity extends AppCompatActivity implements AdapterView
             modelTv.setText(scanResult.getModeId());
             macTv.setText(scanResult.getMac());
             rssiTv.setText(String.valueOf(scanResult.getRssi()));
-
+            if(scanResult.getDeviceType()== ScaleType.SCALE_BLE_DOUBLE){
+                deviceType.setImageResource(R.drawable.wifi_icon);
+            }else{
+                deviceType.setImageResource(R.drawable.system_item_arrow);
+            }
 
             return convertView;
         }
@@ -145,6 +156,7 @@ public class SystemScanActivity extends AppCompatActivity implements AdapterView
                 Log.d("ScanActivity", "initData:" + s);
             }
         });
+        wifiSetDialog =new WIFISetDialog(SystemScanActivity.this);
     }
 
     @Override
@@ -209,9 +221,26 @@ public class SystemScanActivity extends AppCompatActivity implements AdapterView
             return;
         }
         stopScan();
-        QNBleDevice device = this.devices.get(position);
-        //连接设备
-        connectDevice(device);
+        final QNBleDevice device = this.devices.get(position);
+        if(device.getDeviceType()== ScaleType.SCALE_BLE_DOUBLE){
+            wifiSetDialog.setDialogClickListener(new WIFISetDialog.DialogClickListener() {
+                @Override
+                public void confirmClick(String ssid, String pwd) {
+                    Log.e(TAG, "ssid：" + ssid);
+                    startActivity(ConnectActivity.getCallIntent(SystemScanActivity.this, mUser, device,new QNWiFiConfig(ssid,pwd)));
+                    wifiSetDialog.dismiss();
+                }
+
+                @Override
+                public void cancelClick() {
+
+                }
+            });
+            wifiSetDialog.show();
+        }else {
+            //连接设备
+            connectDevice(device);
+        }
     }
 
     private void connectDevice(QNBleDevice device) {

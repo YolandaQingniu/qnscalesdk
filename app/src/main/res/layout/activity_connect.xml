@@ -80,12 +80,15 @@
         <TextView
             android:id="@+id/hmacTest"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-            <Button
-                android:id="@+id/testHmac"
-                android:layout_width="wrap_content"
-                android:text="扫描获取测试hmac"
-                android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/testHmac"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="扫描获取测试hmac"
+            android:visibility="gone" />
     </LinearLayout>
 
 

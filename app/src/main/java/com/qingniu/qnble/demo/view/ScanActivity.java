@@ -1,11 +1,14 @@
 package com.qingniu.qnble.demo.view;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,18 +17,23 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qingniu.qnble.demo.R;
+import com.qingniu.qnble.demo.ScanQrActivity;
 import com.qingniu.qnble.demo.SettingActivity;
 import com.qingniu.qnble.demo.bean.Config;
 import com.qingniu.qnble.demo.bean.User;
+import com.qingniu.qnble.demo.picker.WIFISetDialog;
 import com.qingniu.qnble.demo.util.AndroidPermissionCenter;
 import com.qingniu.qnble.demo.util.ToastMaker;
 import com.qingniu.qnble.demo.util.UserConst;
 import com.qingniu.qnble.utils.QNLogUtils;
+import com.qingniu.scale.constant.ScaleType;
 import com.yolanda.health.qnblesdk.constant.CheckStatus;
 import com.yolanda.health.qnblesdk.constant.QNIndicator;
 import com.yolanda.health.qnblesdk.constant.UserGoal;
@@ -38,6 +46,7 @@ import com.yolanda.health.qnblesdk.out.QNConfig;
 import com.yolanda.health.qnblesdk.out.QNShareData;
 import com.yolanda.health.qnblesdk.out.QNUser;
 import com.yolanda.health.qnblesdk.out.QNUtils;
+import com.yolanda.health.qnblesdk.out.QNWiFiConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,11 +78,24 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
     EditText qr_time_et;
     @BindView(R.id.qr_data_tv)
     TextView qr_data_tv;
+    @BindView(R.id.scanQrcode)
+    Button scanQrcode;
+    @BindView(R.id.nameTv)
+    TextView nameTv;
+    @BindView(R.id.modelTv)
+    TextView modelTv;
+    @BindView(R.id.macTv)
+    TextView macTv;
+    @BindView(R.id.rssiTv)
+    TextView rssiTv;
+    @BindView(R.id.lvHeadLay)
+    LinearLayout lvHeadLay;
 
     private QNBleApi mQNBleApi;
     private User mUser;
     private Config mConfig;
     private boolean isScanning;
+    private WIFISetDialog wifiSetDialog;
 
     public static Intent getCallIntent(Context context, User user, Config mConfig) {
         return new Intent(context, ScanActivity.class)
@@ -108,6 +130,7 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
             TextView modelTv = (TextView) convertView.findViewById(R.id.modelTv);
             TextView macTv = (TextView) convertView.findViewById(R.id.macTv);
             TextView rssiTv = (TextView) convertView.findViewById(R.id.rssiTv);
+            ImageView deviceType = convertView.findViewById(R.id.deviceType);
 
             QNBleDevice scanResult = devices.get(position);
 
@@ -115,6 +138,11 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
             modelTv.setText(scanResult.getModeId());
             macTv.setText(scanResult.getMac());
             rssiTv.setText(String.valueOf(scanResult.getRssi()));
+            if(scanResult.getDeviceType()== ScaleType.SCALE_BLE_DOUBLE){
+                deviceType.setImageResource(R.drawable.wifi_icon);
+            }else{
+                deviceType.setImageResource(R.drawable.system_item_arrow);
+            }
 
 
             return convertView;
@@ -158,7 +186,7 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onStopScan() {
                 QNLogUtils.log("ScanActivity", "onStopScan");
                 isScanning = false;
-
+                ToastMaker.show(ScanActivity.this, "已经停止扫描");
             }
 
             @Override
@@ -187,6 +215,8 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
                 Log.d("ScanActivity", "initData:" + s);
             }
         });
+        wifiSetDialog =new WIFISetDialog(ScanActivity.this);
+
     }
 
     @Override
@@ -211,6 +241,9 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onResult(int code, String msg) {
                 Log.d("ScanActivity", "code:" + code + ";msg:" + msg);
+                if (code != CheckStatus.OK.getCode()) {
+                   ToastMaker.show(ScanActivity.this,code+":"+msg);
+                }
             }
         });
     }
@@ -232,9 +265,26 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
             return;
         }
         stopScan();
-        QNBleDevice device = this.devices.get(position);
-        //连接设备
-        connectDevice(device);
+        final QNBleDevice device = this.devices.get(position);
+        if(device.getDeviceType()== ScaleType.SCALE_BLE_DOUBLE){
+            wifiSetDialog.setDialogClickListener(new WIFISetDialog.DialogClickListener() {
+                @Override
+                public void confirmClick(String ssid, String pwd) {
+                    Log.e(TAG, "ssid：" + ssid);
+                    startActivity(ConnectActivity.getCallIntent(ScanActivity.this, mUser, device,new QNWiFiConfig(ssid,pwd)));
+                    wifiSetDialog.dismiss();
+                }
+
+                @Override
+                public void cancelClick() {
+
+                }
+            });
+            wifiSetDialog.show();
+        }else {
+            //连接设备
+            connectDevice(device);
+        }
     }
 
     private void connectDevice(QNBleDevice device) {
@@ -242,9 +292,18 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
 
-    @OnClick({R.id.scan_setting, R.id.scanBtn, R.id.stopBtn, R.id.qr_test_btn})
+    @OnClick({R.id.scan_setting, R.id.scanBtn, R.id.stopBtn, R.id.qr_test_btn, R.id.scanQrcode})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.scanQrcode:
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    startActivityForResult(new Intent(ScanActivity.this, ScanQrActivity.class), 100);
+                } else {
+                    AndroidPermissionCenter.verifyCameraPermissions(this);
+                }
+                break;
             case R.id.scan_setting:
                 startActivity(SettingActivity.getCallIntent(this));
                 finish();
@@ -260,11 +319,8 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
                 break;
             case R.id.stopBtn:
-                if (isScanning) {
-                    stopScan();
-                } else {
-                    ToastMaker.show(this, "已经停止扫描");
-                }
+                stopScan();
+
                 break;
             case R.id.qr_test_btn:
                 String qrcode = qr_data_et.getText().toString().trim();
@@ -368,6 +424,28 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
                     Toast.makeText(this, "" + "权限" + permissions[i] + "申请失败", Toast.LENGTH_SHORT).show();
                 }
             }
+        } else if (requestCode == AndroidPermissionCenter.REQUEST_CAMERA) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startActivityForResult(new Intent(ScanActivity.this, ScanQrActivity.class), 100);
+            }
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100) {
+            if (resultCode == 200) {
+                String qrCode = data.getStringExtra("code").trim();
+                Log.e(TAG, "二维码：" + qrCode);
+                if (!TextUtils.isEmpty(qrCode)) {
+                    qr_data_et.setText(qrCode);
+                } else {
+                    //
+                }
+
+            }
+        }
+    }
+
 }

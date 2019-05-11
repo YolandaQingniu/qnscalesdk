@@ -47,6 +47,9 @@ public class User implements Parcelable {
      */
     private int choseGoal;
 
+
+    private double clothesWeight;
+
     public String getUserId() {
         return userId;
     }
@@ -106,6 +109,28 @@ public class User implements Parcelable {
         this.choseGoal = choseGoal;
     }
 
+    public double getClothesWeight() {
+        return clothesWeight;
+    }
+
+    public void setClothesWeight(double clothesWeight) {
+        this.clothesWeight = clothesWeight;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", height=" + height +
+                ", gender='" + gender + '\'' +
+                ", birthDay=" + birthDay +
+                ", athleteType=" + athleteType +
+                ", choseShape=" + choseShape +
+                ", choseGoal=" + choseGoal +
+                ", clothesWeight=" + clothesWeight +
+                '}';
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -120,6 +145,7 @@ public class User implements Parcelable {
         dest.writeInt(this.athleteType);
         dest.writeInt(this.choseShape);
         dest.writeInt(this.choseGoal);
+        dest.writeDouble(this.clothesWeight);
     }
 
     protected User(Parcel in) {
@@ -131,6 +157,7 @@ public class User implements Parcelable {
         this.athleteType = in.readInt();
         this.choseShape = in.readInt();
         this.choseGoal = in.readInt();
+        this.clothesWeight = in.readDouble();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
