@@ -20,7 +20,7 @@
 	<!--如果希望一直使用最新版本可以替换 0.6.1 为 master-SNAPSHOT -->
 	dependencies {
 	        ...
-	        compile 'com.github.YolandaQingniu:qnscalesdk:0.6.0'
+	        compile 'com.github.YolandaQingniu:qnscalesdk:0.6.1'
 	}
 	```
 	
