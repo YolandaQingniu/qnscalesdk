@@ -21,13 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qingniu.qnble.demo.R;
-import com.qingniu.qnble.demo.ScanQrActivity;
 import com.qingniu.qnble.demo.bean.User;
 import com.qingniu.qnble.demo.util.AndroidPermissionCenter;
 import com.qingniu.qnble.demo.util.ToastMaker;
 import com.qingniu.qnble.demo.util.UserConst;
 import com.qingniu.qnble.utils.QNLogUtils;
 import com.qingniu.scale.constant.DecoderConst;
+import com.yolanda.health.qnblesdk.constant.CheckStatus;
 import com.yolanda.health.qnblesdk.constant.QNIndicator;
 import com.yolanda.health.qnblesdk.constant.QNScaleStatus;
 import com.yolanda.health.qnblesdk.constant.UserGoal;
@@ -43,10 +43,7 @@ import com.yolanda.health.qnblesdk.out.QNScaleStoreData;
 import com.yolanda.health.qnblesdk.out.QNUser;
 import com.yolanda.health.qnblesdk.out.QNWiFiConfig;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -63,7 +60,6 @@ import static com.qingniu.qnble.demo.R.id.connectBtn;
  */
 
 public class ConnectActivity extends AppCompatActivity implements View.OnClickListener {
-
 
 
     public static Intent getCallIntent(Context context, User user, QNBleDevice device) {
@@ -109,7 +105,8 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
 
     private boolean mIsConnected;
 
-    private QNScaleData preQNScaleData;
+    private QNScaleData currentQNScaleData;
+    private List<QNScaleData> historyQNScaleData = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -298,7 +295,8 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                     String value = fatValue.getValue() + "";
                     Log.d("ConnectActivity", "收到皮下脂肪数据:" + value);
                 }
-                preQNScaleData =data;
+                currentQNScaleData = data;
+                historyQNScaleData.add(data);
                 Log.d("ConnectActivity", "加密hmac为:" + data.getHmac());
 //                Log.d("ConnectActivity", "收到体脂肪:"+data.getItem(QNIndicator.TYPE_BODYFAT).getValue());
             }
@@ -313,6 +311,8 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                     data.setUser(qnUser);
                     QNScaleData qnScaleData = data.generateScaleData();
                     onReceiveScaleData(qnScaleData);
+                    currentQNScaleData = qnScaleData;
+                    historyQNScaleData.add(qnScaleData);
                 }
             }
 
@@ -334,7 +334,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
             mBleDevice = intent.getParcelableExtra(UserConst.DEVICE);
             mUser = intent.getParcelableExtra(UserConst.USER);
             mQnWiFiConfig = intent.getParcelableExtra(UserConst.WIFI_CONFIG);
-            if(null==mQnWiFiConfig){
+            if (null == mQnWiFiConfig) {
                 stroteDataTest.setVisibility(View.GONE);
             }
         }
@@ -571,7 +571,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         switch (view.getId()) {
             case R.id.stroteDataTest:
                 //{"weight"=>"25.35", "measure_time"=>"2019-05-06 14:02:51", "mac"=>"F0:FE:6B:CB:75:6A", "model_id"=>"0005", "sign"=>"3F828A0207EB762F0D12E1ED5345AF7D6907304A74A45990B254256AC08DAA76EEA778E4B50ACE92D47DA72DD7257F82734C33A56721D797FD932B3741E5C730F2901F7EFAA1755DD0683BABD0959BB1E82201C3B50B3E8A5360A3D57550CF446DC834B8FA2F0D16DA4C0797CC1C308E4253413D4AB90DC4093F8065199ABE8AB0C9D06E3172E511C54C7E5095BB92C753070DC0CEB5D64785C4577952B50465"}
-                QNScaleStoreData qnScaleStoreData =new QNScaleStoreData();
+                /*QNScaleStoreData qnScaleStoreData =new QNScaleStoreData();
                 qnScaleStoreData.setUser(createQNUser());
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 try {
@@ -588,36 +588,49 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                     onReceiveScaleData(qnScaleData);
                 } catch (ParseException e) {
                     e.printStackTrace();
-                }
+                }*/
 
                 break;
             case R.id.setThreshold:
-                if(TextUtils.isEmpty(threshold.getText().toString())){
-                    ToastMaker.show(this,"请输入体脂变化控制");
+                if (TextUtils.isEmpty(threshold.getText().toString())) {
+                    ToastMaker.show(this, "请输入体脂变化控制");
                     return;
                 }
-                if(null==preQNScaleData){
-                    ToastMaker.show(this,"请先完成一次体重测量！");
+                if (null == currentQNScaleData) {
+                    ToastMaker.show(this, "请先完成一次体重测量,作为第二次测量的对比数据！");
                     return;
                 }
-                if(!TextUtils.isEmpty(hmacTest.getText().toString())){
-                    preQNScaleData.setFatThreshold(hmacTest.getText().toString(), Double.valueOf(threshold.getText().toString()),
+                if (!TextUtils.isEmpty(hmacTest.getText().toString())) {
+                    currentQNScaleData.setFatThreshold(hmacTest.getText().toString(), Double.valueOf(threshold.getText().toString()),
                             new QNResultCallback() {
                                 @Override
                                 public void onResult(int code, String msg) {
-                                    Log.e("setFatThreshold","code="+code+",msg="+msg);
+                                    Log.e("setFatThreshold", "code=" + code + ",msg=" + msg);
+                                    if (code == CheckStatus.OK.getCode()) {
+                                        //设置完后得到调整后数据并进行显示
+                                        onReceiveScaleData(currentQNScaleData);
+                                    }
                                 }
                             });
-                    hmacTest.setText("设置完成请重新测量体重");
-                }else{
-                    preQNScaleData.setFatThreshold(preQNScaleData.getHmac(), Double.valueOf(threshold.getText().toString()),
+
+                } else {
+                    if (historyQNScaleData.size() < 2) {
+                        ToastMaker.show(this, "用户只测量了一次,没有上一次的数据进行对比设置");
+                        return;
+                    }
+                    //当前数据的前一条数据对应历史数据中的倒数第二条
+                    currentQNScaleData.setFatThreshold(historyQNScaleData.get(historyQNScaleData.size() - 2).getHmac(), Double.valueOf(threshold.getText().toString()),
                             new QNResultCallback() {
                                 @Override
                                 public void onResult(int code, String msg) {
-                                    Log.e("setFatThreshold","code="+code+",msg="+msg);
+                                    Log.e("setFatThreshold", "code=" + code + ",msg=" + msg);
+                                    if (code == CheckStatus.OK.getCode()) {
+                                        //设置完后得到调整后数据并进行显示
+                                        onReceiveScaleData(currentQNScaleData);
+                                    }
                                 }
                             });
-                    hmacTest.setText("设置完成请重新测量体重");
+
                 }
 
                 break;
@@ -625,7 +638,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                 if (ContextCompat.checkSelfPermission(this,
                         Manifest.permission.CAMERA)
                         == PackageManager.PERMISSION_GRANTED) {
-                    startActivityForResult(new Intent(ConnectActivity.this, ScanQrActivity.class), 100);
+                    startActivityForResult(new Intent(ConnectActivity.this, com.qingniu.qnble.demo.ScanQrActivity.class), 100);
                 } else {
                     AndroidPermissionCenter.verifyCameraPermissions(this);
                 }
@@ -639,7 +652,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         if (requestCode == 100) {
             if (resultCode == 200) {
                 String qrCode = data.getStringExtra("code").trim();
-                Log.e( "二维码：" , qrCode);
+                Log.e("二维码：", qrCode);
                 if (!TextUtils.isEmpty(qrCode)) {
                     hmacTest.setText(qrCode);
                 } else {
