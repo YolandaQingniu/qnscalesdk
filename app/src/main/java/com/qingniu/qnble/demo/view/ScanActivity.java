@@ -208,6 +208,8 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
         mQnConfig.setConnectOutTime(mConfig.getConnectOutTime());
         mQnConfig.setUnit(mConfig.getUnit());
         mQnConfig.setOnlyScreenOn(mConfig.isOnlyScreenOn());
+        //可选项，默认为false，为true时不检查GPS权限
+        mQnConfig.setNotCheckGPS(false);
         //设置扫描对象
         mQnConfig.save(new QNResultCallback() {
             @Override
