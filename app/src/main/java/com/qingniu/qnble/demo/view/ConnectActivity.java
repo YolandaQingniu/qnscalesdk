@@ -34,6 +34,7 @@ import com.yolanda.health.qnblesdk.constant.UserGoal;
 import com.yolanda.health.qnblesdk.constant.UserShape;
 import com.yolanda.health.qnblesdk.listener.QNBleConnectionChangeListener;
 import com.yolanda.health.qnblesdk.listener.QNDataListener;
+import com.yolanda.health.qnblesdk.listener.QNLogListener;
 import com.yolanda.health.qnblesdk.listener.QNResultCallback;
 import com.yolanda.health.qnblesdk.out.QNBleApi;
 import com.yolanda.health.qnblesdk.out.QNBleDevice;
@@ -113,6 +114,13 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
         mQNBleApi = QNBleApi.getInstance(this);
+        //此API是用来监听日志的，如果需要上传日志到服务器则可以使用，否则不需要设置
+        mQNBleApi.setLogListener(new QNLogListener() {
+            @Override
+            public void onLog(String s) {
+                Log.e("监听日志",s);
+            }
+        });
         ButterKnife.bind(this);
         initView();
         initData();

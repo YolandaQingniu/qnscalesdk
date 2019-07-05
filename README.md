@@ -16,16 +16,16 @@
    ```
 * 在你的module的根目录下的**build.gradle**添加依赖
 	```
-	<!--这里的版本号，0.6.2 可以指定为任意release版本-->
-	<!--如果希望一直使用最新版本可以替换 0.6.2 为 master-SNAPSHOT -->
+	<!--这里的版本号，0.6.3 可以指定为任意release版本-->
+	<!--如果希望一直使用最新版本可以替换 0.6.3 为 master-SNAPSHOT -->
 	dependencies {
 	        ...
-	        compile 'com.github.YolandaQingniu:qnscalesdk:0.6.2'
+	        compile 'com.github.YolandaQingniu:qnscalesdk:0.6.3'
 	}
 	```
 	
 ### Eclipse
-* 下载最新的[jar和so库](https://github.com/YolandaQingniu/qnscalesdk/releases/download/0.6.2/qnsdk-0.6.2-Android.zip)，导入下载的`jar和so库`
+* 下载最新的[jar和so库](https://github.com/YolandaQingniu/qnscalesdk/releases/download/0.6.3/qnsdk-0.6.3-Android.zip)，导入下载的`jar和so库`
 * 在清单文件中申请蓝牙权限、位置权限、网络权限（离线SDK不需要）
     ```
    <!--蓝牙权限-->
@@ -79,5 +79,8 @@
 7. SDK返回错误的文件,确认文件位置无异常，确认文件在demo中使用无异常
     + 检查是否有添加so库
     + 检查是否打包的apk文件中含有so库
+8. SDK 集成后测量Native方法报错
+    + 检查是否集成设置有问题
+    + 本地集成不能和在线集成混合使用，只能选择一种方式
     
 **`提示`**：遇到无法定位的问题，希望开发者能第一时间提供日志，以便我们尽快找到问题    
