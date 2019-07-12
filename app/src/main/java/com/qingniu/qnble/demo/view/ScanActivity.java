@@ -41,6 +41,7 @@ import com.yolanda.health.qnblesdk.constant.UserShape;
 import com.yolanda.health.qnblesdk.listener.QNBleDeviceDiscoveryListener;
 import com.yolanda.health.qnblesdk.listener.QNResultCallback;
 import com.yolanda.health.qnblesdk.out.QNBleApi;
+import com.yolanda.health.qnblesdk.out.QNBleBroadcastDevice;
 import com.yolanda.health.qnblesdk.out.QNBleDevice;
 import com.yolanda.health.qnblesdk.out.QNConfig;
 import com.yolanda.health.qnblesdk.out.QNShareData;
@@ -195,6 +196,12 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
                 QNLogUtils.log("ScanActivity", "onScanFail:" + code);
                 Toast.makeText(ScanActivity.this, "扫描异常，请重启手机蓝牙!", Toast.LENGTH_SHORT).show();
             }
+
+            //广播秤专用
+            @Override
+            public void onBroadcastDeviceDiscover(QNBleBroadcastDevice device) {
+
+            }
         });
 
     }
@@ -208,8 +215,6 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
         mQnConfig.setConnectOutTime(mConfig.getConnectOutTime());
         mQnConfig.setUnit(mConfig.getUnit());
         mQnConfig.setOnlyScreenOn(mConfig.isOnlyScreenOn());
-        //可选项，默认为false，为true时不检查GPS权限
-        mQnConfig.setNotCheckGPS(false);
         //设置扫描对象
         mQnConfig.save(new QNResultCallback() {
             @Override
@@ -284,8 +289,14 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
             });
             wifiSetDialog.show();
         }else {
-            //连接设备
-            connectDevice(device);
+            if(device.getDeviceType()== ScaleType.SCALE_BROADCAST_DOUBLE ||
+                    device.getDeviceType()== ScaleType.SCALE_BROADCAST_SINGLE_OKOK
+                    ||device.getDeviceType()== ScaleType.SCALE_BROADCAST_SINGLE_OKOK){
+                startActivity(BroadcastScaleActivity.getCallIntent(ScanActivity.this, mUser, device));
+            }else {
+                //连接设备
+                connectDevice(device);
+            }
         }
     }
 

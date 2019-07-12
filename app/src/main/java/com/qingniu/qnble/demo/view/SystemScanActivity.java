@@ -238,8 +238,14 @@ public class SystemScanActivity extends AppCompatActivity implements AdapterView
             });
             wifiSetDialog.show();
         }else {
-            //连接设备
-            connectDevice(device);
+            if(device.getDeviceType()== ScaleType.SCALE_BROADCAST_DOUBLE ||
+                    device.getDeviceType()== ScaleType.SCALE_BROADCAST_SINGLE_OKOK
+                    ||device.getDeviceType()== ScaleType.SCALE_BROADCAST_SINGLE_OKOK){
+                startActivity(BroadcastScaleActivity.getCallIntent(SystemScanActivity.this, mUser, device));
+            }else {
+                //连接设备
+                connectDevice(device);
+            }
         }
     }
 

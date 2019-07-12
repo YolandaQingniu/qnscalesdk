@@ -52,7 +52,9 @@
         <activity
             android:name=".view.ConnectActivity"
             android:screenOrientation="portrait" />
-
+        <activity android:name=".view.BroadcastScaleActivity"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>
