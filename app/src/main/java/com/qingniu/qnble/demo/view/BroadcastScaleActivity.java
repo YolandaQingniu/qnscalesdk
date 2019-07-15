@@ -55,6 +55,7 @@ public class BroadcastScaleActivity extends AppCompatActivity {
     private QNUser qnUser;
     private QNBleBroadcastDevice currentDevice;
     private List<QNScaleItemData> mDatas = new ArrayList<>();
+    private int currentMeasureCode;
 
     public static Intent getCallIntent(Context context, User user, QNBleDevice device) {
         return new Intent(context, BroadcastScaleActivity.class)
@@ -108,16 +109,21 @@ public class BroadcastScaleActivity extends AppCompatActivity {
             //蓝牙广播秤专用数据
             @Override
             public void onBroadcastDeviceDiscover(QNBleBroadcastDevice device) {
-                if(null!=device && device.getMac().equals(mBleDevice.getMac())){
-                    currentDevice =device;
+                if (null != device && device.getMac().equals(mBleDevice.getMac())) {
+                    currentDevice = device;
                     weightTv.setText(initWeight(device.getWeight()));
-                    if(device.isComplete()){
-                        onReceiveScaleData(device.generateScaleData(qnUser, new QNResultCallback() {
+                    if (device.isComplete()) {
+                        QNScaleData qnScaleData = device.generateScaleData(qnUser, new QNResultCallback() {
                             @Override
                             public void onResult(int code, String msg) {
                                 Log.e("generateScaleData", "结果" + code + ",msg:" + msg);
                             }
-                        }));
+                        });
+                        //此处用来去重
+                        if (currentMeasureCode != device.getMeasureCode()) {
+                            onReceiveScaleData(qnScaleData);
+                        }
+                        currentMeasureCode = device.getMeasureCode();
                     }
                 }
             }
@@ -134,27 +140,27 @@ public class BroadcastScaleActivity extends AppCompatActivity {
     @OnClick(R.id.setUnit)
     public void onViewClicked() {
         int unit;
-        if(TextUtils.isEmpty(unitEdit.getText().toString())){
-            ToastMaker.show(this,"设置的单位不能为空");
+        if (TextUtils.isEmpty(unitEdit.getText().toString())) {
+            ToastMaker.show(this, "设置的单位不能为空");
             return;
-        }else{
+        } else {
             try {
                 unit = Integer.parseInt(unitEdit.getText().toString());
-            }catch (Exception e){
-                ToastMaker.show(this,"请输入整数！");
+            } catch (Exception e) {
+                ToastMaker.show(this, "请输入整数！");
                 return;
             }
         }
         if (null == currentDevice) {
-            ToastMaker.show(this,"当前需要设置的设备不能为空");
+            ToastMaker.show(this, "当前需要设置的设备不能为空");
             return;
         }
-        currentDevice.syncUnit(unit,new QNResultCallback(){
+        currentDevice.syncUnit(unit, new QNResultCallback() {
 
             @Override
             public void onResult(int code, String msg) {
                 Log.e("syncUnit", "结果" + code + ",msg:" + msg);
-                ToastMaker.show(BroadcastScaleActivity.this,code + ":" + msg);
+                ToastMaker.show(BroadcastScaleActivity.this, code + ":" + msg);
             }
         });
     }
