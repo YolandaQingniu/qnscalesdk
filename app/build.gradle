@@ -65,7 +65,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'cn.bingoogolapple:bga-qrcode-zxing:1.3.6'
 //    compile ("com.github.duodebuyali:QNScaleSDK:master-SNAPSHOT") {
-    compile("com.github.YolandaQingniu:qnscalesdk:0.6.4-beta3") {
+    compile("com.github.YolandaQingniu:qnscalesdk:0.6.4-beta4") {
         exclude module: "support-v4"//防止和module引用的v4资源版本不同
     }
 }
