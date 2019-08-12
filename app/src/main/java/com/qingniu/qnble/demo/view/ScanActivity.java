@@ -216,6 +216,10 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
         mQnConfig.setConnectOutTime(mConfig.getConnectOutTime());
         mQnConfig.setUnit(mConfig.getUnit());
         mQnConfig.setOnlyScreenOn(mConfig.isOnlyScreenOn());
+        /**
+         * 强化广播秤信号，此选项只对广播秤有效
+         */
+        mQnConfig.setEnhanceBleBroadcast(mConfig.isEnhanceBleBroadcast());
         //设置扫描对象
         mQnConfig.save(new QNResultCallback() {
             @Override
@@ -291,7 +295,7 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
             wifiSetDialog.show();
         }else {
             if(device.getDeviceType()== ScaleType.SCALE_BROADCAST_DOUBLE ||
-                    device.getDeviceType()== ScaleType.SCALE_BROADCAST_SINGLE_OKOK
+                    device.getDeviceType()== ScaleType.SCALE_BROADCAST_SINGLE
                     ||device.getDeviceType()== ScaleType.SCALE_BROADCAST_SINGLE_OKOK){
                 startActivity(BroadcastScaleActivity.getCallIntent(ScanActivity.this, mUser, device));
             }else {

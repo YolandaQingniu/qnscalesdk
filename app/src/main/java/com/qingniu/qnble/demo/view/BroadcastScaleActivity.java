@@ -27,6 +27,7 @@ import com.yolanda.health.qnblesdk.listener.QNResultCallback;
 import com.yolanda.health.qnblesdk.out.QNBleApi;
 import com.yolanda.health.qnblesdk.out.QNBleBroadcastDevice;
 import com.yolanda.health.qnblesdk.out.QNBleDevice;
+import com.yolanda.health.qnblesdk.out.QNConfig;
 import com.yolanda.health.qnblesdk.out.QNScaleData;
 import com.yolanda.health.qnblesdk.out.QNScaleItemData;
 import com.yolanda.health.qnblesdk.out.QNUser;
@@ -78,12 +79,30 @@ public class BroadcastScaleActivity extends AppCompatActivity {
         listAdapter.notifyDataSetChanged();
 
         mQnbleApi = QNBleApi.getInstance(this);
+
         Intent intent = getIntent();
         if (intent != null) {
             mBleDevice = intent.getParcelableExtra(UserConst.DEVICE);
             mUser = intent.getParcelableExtra(UserConst.USER);
             qnUser = createQNUser();
         }
+
+        QNConfig mQnConfig = mQnbleApi.getConfig();
+        mQnConfig.setAllowDuplicates(false);
+        mQnConfig.setDuration(0);
+        mQnConfig.setOnlyScreenOn(false);
+        /**
+         * 强化广播秤信号，这个只对广播秤有效
+         */
+        mQnConfig.setEnhanceBleBroadcast(true);
+        //设置扫描对象
+        mQnConfig.save(new QNResultCallback() {
+            @Override
+            public void onResult(int i, String s) {
+                Log.d("ScanActivity", "initData:" + s);
+            }
+        });
+
         mQnbleApi.setBleDeviceDiscoveryListener(new QNBleDeviceDiscoveryListener() {
             @Override
             public void onDeviceDiscover(QNBleDevice device) {

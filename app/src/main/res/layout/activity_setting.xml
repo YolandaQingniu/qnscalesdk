@@ -227,6 +227,47 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/user_clothes_explain"
+                    style="@style/user_small_text"
+                    android:text="用户衣服重量"/>
+
+                <ImageView
+                    android:id="@+id/user_clothes_arrow"
+                    style="@style/user_arrow_image"
+                    android:src="@drawable/system_item_arrow"/>
+
+                <EditText
+                    android:id="@+id/user_clothes_edt"
+                    android:layout_width="180dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_toStartOf="@+id/user_clothes_arrow"
+                    android:background="@drawable/edittext_background"
+                    android:text="0"
+                    android:inputType="numberDecimal"/>
+
+
+            </RelativeLayout>
+
+            <TextView
+                style="@style/user_explain_text"
+                android:text="用户的衣服重量，计算各项指标时会去掉"/>
+        </LinearLayout>
+
+        <TextView style="@style/divide_line"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
                     android:id="@+id/user_height_explain"
                     style="@style/user_small_text"
                     android:text="身高"/>
@@ -426,6 +467,12 @@
                     android:layout_marginStart="30dp"
                     android:src="@drawable/system_item_arrow"/>
             </RelativeLayout>
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/onlyBroadCast"
+                android:layout_width="wrap_content"
+                android:text="强化蓝牙广播（只对广播秤有用）"
+                android:layout_height="wrap_content" />
 
             <EditText
                 android:id="@+id/connect_out_timeEt"

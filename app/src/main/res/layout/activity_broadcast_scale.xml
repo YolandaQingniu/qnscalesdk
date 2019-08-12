@@ -35,7 +35,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="此功能只双模称有效" />
+            android:text="此功能只对双向广播秤有效" />
     </LinearLayout>
 
     <LinearLayout

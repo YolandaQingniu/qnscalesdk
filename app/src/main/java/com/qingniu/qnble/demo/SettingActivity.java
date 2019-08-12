@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -23,6 +25,9 @@ import com.qingniu.qnble.demo.util.ToastMaker;
 import com.qingniu.qnble.demo.view.ScanActivity;
 import com.qingniu.qnble.demo.view.SystemScanActivity;
 import com.yolanda.health.qnblesdk.constant.QNInfoConst;
+import com.yolanda.health.qnblesdk.constant.QNUnit;
+import com.yolanda.health.qnblesdk.constant.UserGoal;
+import com.yolanda.health.qnblesdk.constant.UserShape;
 
 import java.util.Date;
 
@@ -85,6 +90,11 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
     @BindView(R.id.connect_out_timeEt)
     EditText mConnectOutEt;
 
+    @BindView(R.id.user_clothes_edt)
+    EditText user_clothes_edt;
+    @BindView(R.id.onlyBroadCast)
+    AppCompatCheckBox onlyBroadCast;
+
     private Config mBleConfig; //蓝牙配置对象
     private String mGender = "male";//用户性别
     private int mHeight = 172; //用户身高
@@ -127,6 +137,12 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
         mUserBirthdayTv.setOnClickListener(this);
         mSure.setOnClickListener(this);
         btn_system_scan.setOnClickListener(this);
+        onlyBroadCast.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mBleConfig.setEnhanceBleBroadcast(isChecked);
+            }
+        });
 
         shapeSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -137,7 +153,7 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                mUser.setChoseShape(0);
+                mUser.setChoseShape(UserShape.SHAPE_NONE.getCode());
 
             }
         });
@@ -151,7 +167,7 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                mUser.setChoseGoal(0);
+                mUser.setChoseGoal(UserGoal.GOAL_NONE.getCode());
 
             }
         });
@@ -182,16 +198,16 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
                 mBleConfig.setAllowDuplicates(true);
                 break;
             case R.id.user_unit_kg:
-                mBleConfig.setUnit(0);
+                mBleConfig.setUnit(QNUnit.WEIGHT_UNIT_KG);
                 break;
             case R.id.user_unit_lb:
-                mBleConfig.setUnit(1);
+                mBleConfig.setUnit(QNUnit.WEIGHT_UNIT_LB);
                 break;
             case R.id.user_unit_jin:
-                mBleConfig.setUnit(2);
+                mBleConfig.setUnit(QNUnit.WEIGHT_UNIT_JIN);
                 break;
             case R.id.user_unit_st:
-                mBleConfig.setUnit(3);
+                mBleConfig.setUnit(QNUnit.WEIGHT_UNIT_ST);
                 break;
         }
 
@@ -277,6 +293,19 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
             return true;
         }
 
+        double clothesWeight = 0;
+        try {
+            clothesWeight = Double.parseDouble(user_clothes_edt.getText().toString().trim());
+        } catch (Exception e) {
+            e.printStackTrace();
+            ToastMaker.show(this, "请填写正确的衣服重量");
+            return true;
+        }
+        if (clothesWeight < 0) {
+            ToastMaker.show(this, "请填写正确的衣服重量");
+            return true;
+        }
+
         if (userId.isEmpty()) {
             ToastMaker.show(this, "用户id不能为空");
             return true;
@@ -301,6 +330,7 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
         mUser.setHeight(mHeight);
         mUser.setGender(mGender);
         mUser.setBirthDay(mBirthday);
+        mUser.setClothesWeight(clothesWeight);
 
         mBleConfig.setDuration(scanTime);
         mBleConfig.setScanOutTime(scanOutTime);

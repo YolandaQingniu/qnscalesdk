@@ -13,6 +13,17 @@ public class Config implements Parcelable {
     private boolean allowDuplicates;
     private int duration;
 
+    private boolean enhanceBleBroadcast;
+
+    public boolean isEnhanceBleBroadcast() {
+        return enhanceBleBroadcast;
+    }
+
+    public Config setEnhanceBleBroadcast(boolean enhanceBleBroadcast) {
+        this.enhanceBleBroadcast = enhanceBleBroadcast;
+        return this;
+    }
+
     public boolean isOnlyScreenOn() {
         return onlyScreenOn;
     }
@@ -70,6 +81,7 @@ public class Config implements Parcelable {
     public Config() {
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -80,16 +92,20 @@ public class Config implements Parcelable {
         dest.writeByte(this.onlyScreenOn ? (byte) 1 : (byte) 0);
         dest.writeByte(this.allowDuplicates ? (byte) 1 : (byte) 0);
         dest.writeInt(this.duration);
+        dest.writeByte(this.enhanceBleBroadcast ? (byte) 1 : (byte) 0);
         dest.writeInt(this.unit);
         dest.writeLong(this.scanOutTime);
+        dest.writeLong(this.connectOutTime);
     }
 
     protected Config(Parcel in) {
         this.onlyScreenOn = in.readByte() != 0;
         this.allowDuplicates = in.readByte() != 0;
         this.duration = in.readInt();
+        this.enhanceBleBroadcast = in.readByte() != 0;
         this.unit = in.readInt();
         this.scanOutTime = in.readLong();
+        this.connectOutTime = in.readLong();
     }
 
     public static final Creator<Config> CREATOR = new Creator<Config>() {
