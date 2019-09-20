@@ -33,9 +33,9 @@ import com.yolanda.health.qnblesdk.constant.QNScaleStatus;
 import com.yolanda.health.qnblesdk.constant.UserGoal;
 import com.yolanda.health.qnblesdk.constant.UserShape;
 import com.yolanda.health.qnblesdk.listener.QNBleConnectionChangeListener;
-import com.yolanda.health.qnblesdk.listener.QNDataListener;
 import com.yolanda.health.qnblesdk.listener.QNLogListener;
 import com.yolanda.health.qnblesdk.listener.QNResultCallback;
+import com.yolanda.health.qnblesdk.listener.QNScaleDataListener;
 import com.yolanda.health.qnblesdk.out.QNBleApi;
 import com.yolanda.health.qnblesdk.out.QNBleDevice;
 import com.yolanda.health.qnblesdk.out.QNScaleData;
@@ -117,8 +117,8 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         //此API是用来监听日志的，如果需要上传日志到服务器则可以使用，否则不需要设置
         mQNBleApi.setLogListener(new QNLogListener() {
             @Override
-            public void onLog(String s) {
-                Log.e("监听日志",s);
+            public void onLog(String log) {
+                Log.e("test",log);
             }
         });
         ButterKnife.bind(this);
@@ -176,36 +176,11 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                 setBleStatus(QNScaleStatus.STATE_DISCONNECTED);
             }
 
-            //测量过程中的连接状态
-            @Override
-            public void onScaleStateChange(QNBleDevice device, int status) {
-                Log.d("ConnectActivity", "蓝牙状态是:" + status);
-                setBleStatus(status);
-            }
         });
     }
 
     private void connectQnDevice(QNBleDevice device) {
         if (null != mQnWiFiConfig) {
-            mQNBleApi.registerWiFiBleDevice(device, new QNResultCallback() {
-                @Override
-                public void onResult(int code, String msg) {
-                    Log.e("ConnectActivity", "注册结果" + code + ",msg:" + msg);
-                    final int mCode = code;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (mCode == 0) {
-                                ToastMaker.show(ConnectActivity.this, "设备注册成功");
-                            } else {
-                                ToastMaker.show(ConnectActivity.this, "设备注册失败");
-                            }
-                        }
-                    });
-
-
-                }
-            });
             mQNBleApi.connectDeviceSetWiFi(device, createQNUser(), mQnWiFiConfig, new QNResultCallback() {
                 @Override
                 public void onResult(int code, String msg) {
@@ -286,12 +261,11 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void initUserData() {
-        mQNBleApi.setDataListener(new QNDataListener() {
+        mQNBleApi.setDataListener(new QNScaleDataListener() {
             @Override
             public void onGetUnsteadyWeight(QNBleDevice device, double weight) {
                 Log.d("ConnectActivity", "体重是:" + weight);
                 mWeightTv.setText(initWeight(weight));
-
             }
 
             @Override
@@ -332,6 +306,13 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                     return;
                 }
                 Toast.makeText(ConnectActivity.this, text, Toast.LENGTH_SHORT).show();
+            }
+
+            //测量过程中的连接状态
+            @Override
+            public void onScaleStateChange(QNBleDevice device, int status) {
+                Log.d("ConnectActivity", "秤的连接状态是:" + status);
+                setBleStatus(status);
             }
         });
     }
@@ -524,24 +505,6 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
             return;
         }
         if (null != mQnWiFiConfig) {
-            mQNBleApi.registerWiFiBleDevice(mBleDevice, new QNResultCallback() {
-                @Override
-                public void onResult(int code, String msg) {
-                    Log.e("ConnectActivity", "注册结果" + code + ",msg:" + msg);
-                    final int mCode = code;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (mCode == 0) {
-                                ToastMaker.show(ConnectActivity.this, "设备注册成功");
-                            } else {
-                                ToastMaker.show(ConnectActivity.this, "设备注册失败");
-                            }
-                        }
-                    });
-
-                }
-            });
             mQNBleApi.connectDeviceSetWiFi(mBleDevice, createQNUser(), mQnWiFiConfig, new QNResultCallback() {
                 @Override
                 public void onResult(int code, String msg) {
@@ -646,7 +609,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                 if (ContextCompat.checkSelfPermission(this,
                         Manifest.permission.CAMERA)
                         == PackageManager.PERMISSION_GRANTED) {
-                    startActivityForResult(new Intent(ConnectActivity.this, com.qingniu.qnble.demo.ScanQrActivity.class), 100);
+                    startActivityForResult(new Intent(ConnectActivity.this, ScanQrActivity.class), 100);
                 } else {
                     AndroidPermissionCenter.verifyCameraPermissions(this);
                 }

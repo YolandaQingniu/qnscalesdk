@@ -24,8 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qingniu.qnble.demo.R;
-import com.qingniu.qnble.demo.ScanQrActivity;
-import com.qingniu.qnble.demo.SettingActivity;
 import com.qingniu.qnble.demo.bean.Config;
 import com.qingniu.qnble.demo.bean.User;
 import com.qingniu.qnble.demo.picker.WIFISetDialog;
@@ -33,8 +31,8 @@ import com.qingniu.qnble.demo.util.AndroidPermissionCenter;
 import com.qingniu.qnble.demo.util.ToastMaker;
 import com.qingniu.qnble.demo.util.UserConst;
 import com.qingniu.qnble.utils.QNLogUtils;
-import com.qingniu.scale.constant.ScaleType;
 import com.yolanda.health.qnblesdk.constant.CheckStatus;
+import com.yolanda.health.qnblesdk.constant.QNDeviceType;
 import com.yolanda.health.qnblesdk.constant.QNIndicator;
 import com.yolanda.health.qnblesdk.constant.UserGoal;
 import com.yolanda.health.qnblesdk.constant.UserShape;
@@ -139,9 +137,9 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
             modelTv.setText(scanResult.getModeId());
             macTv.setText(scanResult.getMac());
             rssiTv.setText(String.valueOf(scanResult.getRssi()));
-            if(scanResult.getDeviceType()== ScaleType.SCALE_BLE_DOUBLE){
+            if (scanResult.isSupportWifi()) {
                 deviceType.setImageResource(R.drawable.wifi_icon);
-            }else{
+            } else {
                 deviceType.setImageResource(R.drawable.system_item_arrow);
             }
 
@@ -212,7 +210,7 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
         mQnConfig.setAllowDuplicates(mConfig.isAllowDuplicates());
         mQnConfig.setDuration(mConfig.getDuration());
         //此API已废弃
-       // mQnConfig.setScanOutTime(mConfig.getScanOutTime());
+        // mQnConfig.setScanOutTime(mConfig.getScanOutTime());
         mQnConfig.setConnectOutTime(mConfig.getConnectOutTime());
         mQnConfig.setUnit(mConfig.getUnit());
         mQnConfig.setOnlyScreenOn(mConfig.isOnlyScreenOn());
@@ -227,7 +225,7 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
                 Log.d("ScanActivity", "initData:" + s);
             }
         });
-        wifiSetDialog =new WIFISetDialog(ScanActivity.this);
+        wifiSetDialog = new WIFISetDialog(ScanActivity.this);
 
     }
 
@@ -254,7 +252,7 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onResult(int code, String msg) {
                 Log.d("ScanActivity", "code:" + code + ";msg:" + msg);
                 if (code != CheckStatus.OK.getCode()) {
-                   ToastMaker.show(ScanActivity.this,code+":"+msg);
+                    ToastMaker.show(ScanActivity.this, code + ":" + msg);
                 }
             }
         });
@@ -278,12 +276,12 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         stopScan();
         final QNBleDevice device = this.devices.get(position);
-        if(device.getDeviceType()== ScaleType.SCALE_BLE_DOUBLE){
+        if (device.isSupportWifi()) {
             wifiSetDialog.setDialogClickListener(new WIFISetDialog.DialogClickListener() {
                 @Override
                 public void confirmClick(String ssid, String pwd) {
                     Log.e(TAG, "ssid：" + ssid);
-                    startActivity(ConnectActivity.getCallIntent(ScanActivity.this, mUser, device,new QNWiFiConfig(ssid,pwd)));
+                    startActivity(ConnectActivity.getCallIntent(ScanActivity.this, mUser, device, new QNWiFiConfig(ssid, pwd)));
                     wifiSetDialog.dismiss();
                 }
 
@@ -293,12 +291,10 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
             });
             wifiSetDialog.show();
-        }else {
-            if(device.getDeviceType()== ScaleType.SCALE_BROADCAST_DOUBLE ||
-                    device.getDeviceType()== ScaleType.SCALE_BROADCAST_SINGLE
-                    ||device.getDeviceType()== ScaleType.SCALE_BROADCAST_SINGLE_OKOK){
+        } else {
+            if (device.getDeviceType() == QNDeviceType.SCALE_BROADCAST) {
                 startActivity(BroadcastScaleActivity.getCallIntent(ScanActivity.this, mUser, device));
-            }else {
+            } else {
                 //连接设备
                 connectDevice(device);
             }

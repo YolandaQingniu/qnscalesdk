@@ -559,15 +559,6 @@
             android:text="确 定"
             android:textSize="18sp"/>
 
-        <Button
-            android:id="@+id/btn_system_scan"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:text="系统扫描"
-            android:textSize="18sp"/>
-
     </LinearLayout>
 
 </ScrollView>
