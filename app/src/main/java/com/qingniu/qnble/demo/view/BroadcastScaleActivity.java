@@ -160,18 +160,18 @@ public class BroadcastScaleActivity extends AppCompatActivity {
     public void onViewClicked() {
         int unit;
         if (TextUtils.isEmpty(unitEdit.getText().toString())) {
-            ToastMaker.show(this, "设置的单位不能为空");
+            ToastMaker.show(this, getResources().getString(R.string.set_unit_is_empty));
             return;
         } else {
             try {
                 unit = Integer.parseInt(unitEdit.getText().toString());
             } catch (Exception e) {
-                ToastMaker.show(this, "请输入整数！");
+                ToastMaker.show(this, getResources().getString(R.string.input_int));
                 return;
             }
         }
         if (null == currentDevice) {
-            ToastMaker.show(this, "当前需要设置的设备不能为空");
+            ToastMaker.show(this, getResources().getString(R.string.device_set_empty));
             return;
         }
         currentDevice.syncUnit(unit, new QNResultCallback() {

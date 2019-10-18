@@ -13,12 +13,12 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:gravity="center"
-            android:text="设置"
+            android:text="@string/setting"
             android:textSize="20sp"/>
 
         <TextView
             style="@style/user_big_text"
-            android:text="用户资料"/>
+            android:text="@string/user_info"/>
 
         <TextView style="@style/divide_line"/>
 
@@ -29,7 +29,7 @@
             <TextView
                 android:id="@+id/user_shape_explain"
                 style="@style/user_small_text"
-                android:text="用户体型"/>
+                android:text="@string/user_shape"/>
 
             <Spinner
                 android:id="@+id/user_shape_spinner"
@@ -53,7 +53,7 @@
             <TextView
                 android:id="@+id/user_goal_explain"
                 style="@style/user_small_text"
-                android:text="用户目标"/>
+                android:text="@string/user_goal"/>
 
             <Spinner
                 android:id="@+id/user_goal_spinner"
@@ -82,7 +82,7 @@
                 <TextView
                     android:id="@+id/user_name_explain"
                     style="@style/user_small_text"
-                    android:text="用户id"/>
+                    android:text="@string/user_id"/>
 
                 <ImageView
                     android:id="@+id/user_id_arrow"
@@ -123,7 +123,7 @@
                 <TextView
                     android:id="@+id/user_gender_explain"
                     style="@style/user_small_text"
-                    android:text="性别"/>
+                    android:text="@string/grander"/>
 
                 <ImageView
                     android:id="@+id/user_gender_arrow"
@@ -145,13 +145,13 @@
                         android:id="@+id/user_male_rb"
                         style="@style/user_radio_button"
                         android:checked="true"
-                        android:text="男"/>
+                        android:text="@string/male"/>
 
                     <RadioButton
                         android:id="@+id/user_female_rb"
                         style="@style/user_radio_button"
                         android:layout_marginStart="10dp"
-                        android:text="女"/>
+                        android:text="@string/female"/>
 
                 </RadioGroup>
 
@@ -168,15 +168,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
+            <TextView
+                android:id="@+id/user_calc_explain"
+                style="@style/user_small_text"
+                android:text="@string/algorithm_model"/>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/user_calc_explain"
-                    style="@style/user_small_text"
-                    android:text="算法模式"/>
 
                 <ImageView
                     android:id="@+id/user_calc_arrow"
@@ -190,7 +188,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:layout_toStartOf="@id/user_calc_arrow"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -198,13 +195,13 @@
                         android:id="@+id/normal_calc_rb"
                         style="@style/user_radio_button"
                         android:checked="true"
-                        android:text="普通模式"/>
+                        android:text="@string/normal_model"/>
 
                     <RadioButton
                         android:id="@+id/athlete_calc_rb"
                         style="@style/user_radio_button"
                         android:layout_marginStart="10dp"
-                        android:text="运动员模式"/>
+                        android:text="@string/athlete_mode"/>
 
                 </RadioGroup>
 
@@ -212,7 +209,7 @@
 
             <TextView
                 style="@style/user_explain_text"
-                android:text="运动员模式，适用于经常运动的用户"/>
+                android:text="@string/mode_hint"/>
         </LinearLayout>
 
         <TextView style="@style/divide_line"/>
@@ -229,7 +226,7 @@
                 <TextView
                     android:id="@+id/user_clothes_explain"
                     style="@style/user_small_text"
-                    android:text="用户衣服重量"/>
+                    android:text="@string/user_cloth_weight"/>
 
                 <ImageView
                     android:id="@+id/user_clothes_arrow"
@@ -238,7 +235,7 @@
 
                 <EditText
                     android:id="@+id/user_clothes_edt"
-                    android:layout_width="180dp"
+                    android:layout_width="120dp"
                     android:layout_height="32dp"
                     android:layout_alignParentTop="true"
                     android:layout_marginEnd="30dp"
@@ -253,7 +250,7 @@
 
             <TextView
                 style="@style/user_explain_text"
-                android:text="用户的衣服重量，计算各项指标时会去掉"/>
+                android:text="@string/user_cloth_weight_hint"/>
         </LinearLayout>
 
         <TextView style="@style/divide_line"/>
@@ -270,7 +267,7 @@
                 <TextView
                     android:id="@+id/user_height_explain"
                     style="@style/user_small_text"
-                    android:text="身高"/>
+                    android:text="@string/height"/>
 
                 <ImageView
                     android:id="@+id/user_height_arrow"
@@ -305,7 +302,7 @@
                 <TextView
                     android:id="@+id/user_birthday_explain"
                     style="@style/user_small_text"
-                    android:text="生日"/>
+                    android:text="@string/birthday"/>
 
                 <ImageView
                     android:id="@+id/user_birthday_arrow"
@@ -328,7 +325,7 @@
         <TextView
             style="@style/user_big_text"
             android:layout_marginTop="30dp"
-            android:text="蓝牙相关设置"/>
+            android:text="@string/ble_setting"/>
 
         <TextView style="@style/divide_line"/>
 
@@ -336,21 +333,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
+            <TextView
+                android:id="@+id/ble_scan_explain"
+                style="@style/user_small_text"
+                android:text="@string/select_scan_mode"/>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/ble_scan_explain"
-                    style="@style/user_small_text"
-                    android:text="扫描模式"/>
 
                 <RadioGroup
                     android:id="@+id/ble_scan_grp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
                     android:layout_marginEnd="15dp"
                     android:layout_marginTop="4dp"
                     android:gravity="center_vertical"
@@ -360,13 +354,13 @@
                         android:id="@+id/ble_scan_first_time"
                         style="@style/user_radio_button"
                         android:checked="true"
-                        android:text="首次"/>
+                        android:text="@string/first_time"/>
 
                     <RadioButton
                         android:id="@+id/ble_scan_every_time"
                         style="@style/user_radio_button"
                         android:layout_marginStart="10dp"
-                        android:text="每次"/>
+                        android:text="@string/every_time"/>
                 </RadioGroup>
 
             </RelativeLayout>
@@ -390,7 +384,7 @@
                 <TextView
                     android:id="@+id/scan_timeTv"
                     style="@style/user_small_text"
-                    android:text="扫描时间（ms）"/>
+                    android:text="@string/scan_time"/>
 
                 <ImageView
                     style="@style/user_arrow_image"
@@ -425,7 +419,7 @@
                 <TextView
                     android:id="@+id/scan_out_timeTv"
                     style="@style/user_small_text"
-                    android:text="扫描超时时间（ms）"/>
+                    android:text="@string/scan_out_time"/>
 
                 <ImageView
                     style="@style/user_arrow_image"
@@ -460,7 +454,7 @@
                 <TextView
                     android:id="@+id/connect_out_timeTv"
                     style="@style/user_small_text"
-                    android:text="连接超时时间（ms）"/>
+                    android:text="@string/connect_out_time"/>
 
                 <ImageView
                     style="@style/user_arrow_image"
@@ -471,7 +465,7 @@
             <android.support.v7.widget.AppCompatCheckBox
                 android:id="@+id/onlyBroadCast"
                 android:layout_width="wrap_content"
-                android:text="强化蓝牙广播（只对广播秤有用）"
+                android:text="@string/broadcast_ble_intensify"
                 android:layout_height="wrap_content" />
 
             <EditText
@@ -502,7 +496,7 @@
                 <TextView
                     android:id="@+id/user_unit_explain"
                     style="@style/user_small_text"
-                    android:text="重量单位"/>
+                    android:text="@string/weight_unit"/>
 
                 <RadioGroup
                     android:id="@+id/user_unit_grp"
@@ -533,7 +527,7 @@
                         style="@style/user_radio_button"
                         android:layout_marginStart="4dp"
                         android:paddingStart="4dp"
-                        android:text="斤"/>
+                        android:text="@string/jin"/>
 
                     <RadioButton
                         android:id="@+id/user_unit_st"
@@ -556,7 +550,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="10dp"
-            android:text="确 定"
+            android:text="@string/confirm"
             android:textSize="18sp"/>
 
     </LinearLayout>

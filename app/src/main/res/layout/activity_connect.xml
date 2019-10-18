@@ -41,7 +41,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:padding="8dp"
-            android:text="返回" />
+            android:text="@string/back" />
 
     </LinearLayout>
 
@@ -60,13 +60,13 @@
                 android:id="@+id/stroteDataTest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="用户生成双模存储数据" />
+                android:text="@string/user_generated_storage_data" />
 
             <EditText
                 android:id="@+id/threshold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="请输入体脂变化控制"
+                android:hint="@string/please_enter_body_fat_change_control"
                 android:inputType="numberDecimal"
                 android:textSize="16sp" />
 
@@ -74,7 +74,7 @@
                 android:id="@+id/setThreshold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="设置体脂变化" />
+                android:text="@string/set_body_fat_change" />
         </LinearLayout>
 
         <TextView

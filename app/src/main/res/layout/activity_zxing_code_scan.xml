@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_marginBottom="120dp"
-            android:text="对准二维码"
+            android:text="@string/aim_qr_code"
             android:textColor="@color/white"
             android:textSize="12sp"/>
 
@@ -75,7 +75,7 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
-                android:text="二维码扫描"
+                android:text="@string/qr_scan"
                 android:layout_centerInParent="true"
                 android:textSize="18sp"
                 android:textColor="@color/white"
@@ -107,7 +107,7 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="打开闪光灯"
+                    android:text="@string/open_flash"
                     android:textColor="@color/white"
                     android:textSize="12sp"/>
         </LinearLayout>

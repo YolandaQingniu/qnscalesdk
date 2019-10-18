@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
-        android:text="根据自己的实际情况选择相应的蓝牙管理方式"
+        android:text="@string/main_hint"
         android:textSize="16dp"/>
 
     <Button
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="60dp"
-        android:text="SDK蓝牙管理"
+        android:text="@string/sdk_api"
         android:textColor="@android:color/black"
         android:textSize="18dp"/>
 
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:text="自主管理连接"
+        android:text="@string/sdk_customer_api"
         android:textColor="@android:color/black"
         android:textSize="18dp"/>
 

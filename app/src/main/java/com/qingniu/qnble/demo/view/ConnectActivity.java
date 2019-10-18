@@ -402,75 +402,74 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         String btnString;
         switch (bleStatus) {
             case QNScaleStatus.STATE_CONNECTING: {
-                stateString = "正在连接";
-                btnString = "断开连接";
+                stateString = getResources().getString(R.string.connecting);
+                btnString = getResources().getString(R.string.disconnected);
                 mIsConnected = true;
                 break;
             }
             case QNScaleStatus.STATE_CONNECTED: {
-                stateString = "已连接";
-                btnString = "断开连接";
+                stateString = getResources().getString(R.string.connected);
+                btnString = getResources().getString(R.string.disconnected);
                 mIsConnected = true;
                 break;
             }
             case QNScaleStatus.STATE_DISCONNECTING: {
-                stateString = "正在断开连接";
-                btnString = "连接";
+                stateString = getResources().getString(R.string.disconnect_in_progress);
+                btnString = getResources().getString(R.string.connect);
                 mIsConnected = false;
 
                 break;
             }
-            case QNScaleStatus.STATE_LINK_LOSS: {
-                stateString = "连接已断开";
-                btnString = "连接";
+            case QNScaleStatus.STATE_LINK_LOSS:{
+                stateString = getResources().getString(R.string.connection_disconnected);
+                btnString = getResources().getString(R.string.connect);
                 mIsConnected = false;
-
                 break;
             }
             case QNScaleStatus.STATE_START_MEASURE: {
-                stateString = "正在测量";
-                btnString = "断开连接";
+                stateString = getResources().getString(R.string.measuring);
+                btnString =  getResources().getString(R.string.disconnected);
                 break;
             }
             case QNScaleStatus.STATE_REAL_TIME: {
-                stateString = "正在测量实时体重";
-                btnString = "断开连接";
+                stateString = getResources().getString(R.string.real_time_weight_measurement);
+                btnString =  getResources().getString(R.string.disconnected);
                 break;
             }
             case QNScaleStatus.STATE_BODYFAT: {
-                stateString = "正在测量阻抗";
-                btnString = "断开连接";
+                stateString = getResources().getString(R.string.impedance_measured);
+                btnString =  getResources().getString(R.string.disconnected);
                 break;
             }
             case QNScaleStatus.STATE_HEART_RATE: {
-                stateString = "正在测量心率";
-                btnString = "断开连接";
+                stateString = getResources().getString(R.string.measuring_heart_rate);
+                btnString =  getResources().getString(R.string.disconnected);
                 break;
             }
             case QNScaleStatus.STATE_MEASURE_COMPLETED: {
-                stateString = "测量完成";
+                stateString = getResources().getString(R.string.measure_complete);
                 hmacTest.setText("");
-                btnString = "断开连接";
+                btnString = getResources().getString(R.string.disconnected);
                 break;
             }
             case QNScaleStatus.STATE_WIFI_BLE_START_NETWORK:
-                stateString = "开始设置WiFi";
-                btnString = "断开连接";
+                stateString = getResources().getString(R.string.start_set_wifi);
+                btnString =  getResources().getString(R.string.disconnected);
                 Log.d("ConnectActivity", "开始设置WiFi");
                 break;
             case QNScaleStatus.STATE_WIFI_BLE_NETWORK_FAIL:
-                stateString = "设置WiFi失败";
-                btnString = "断开连接";
+                stateString = getResources().getString(R.string.failed_to_set_wifi);
+                btnString =  getResources().getString(R.string.disconnected);
                 Log.d("ConnectActivity", "设置WiFi失败");
                 break;
             case QNScaleStatus.STATE_WIFI_BLE_NETWORK_SUCCESS:
-                stateString = "设置WiFi成功";
-                btnString = "断开连接";
+                stateString = getResources().getString(R.string.success_to_set_wifi);
+                btnString = getResources().getString(R.string.disconnected);
                 Log.d("ConnectActivity", "设置WiFi成功");
                 break;
             default: {
-                stateString = "连接已断开";
-                btnString = "连接";
+                stateString = getResources().getString(R.string.connection_disconnected);
+                btnString =  getResources().getString(R.string.connect);
                 mIsConnected = false;
                 break;
             }
@@ -564,11 +563,11 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.setThreshold:
                 if (TextUtils.isEmpty(threshold.getText().toString())) {
-                    ToastMaker.show(this, "请输入体脂变化控制");
+                    ToastMaker.show(this, getResources().getString(R.string.please_enter_body_fat_change_control));
                     return;
                 }
                 if (null == currentQNScaleData) {
-                    ToastMaker.show(this, "请先完成一次体重测量,作为第二次测量的对比数据！");
+                    ToastMaker.show(this,getResources().getString(R.string.set_body_fat_change_hint));
                     return;
                 }
                 if (!TextUtils.isEmpty(hmacTest.getText().toString())) {
@@ -586,7 +585,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
 
                 } else {
                     if (historyQNScaleData.size() < 2) {
-                        ToastMaker.show(this, "用户只测量了一次,没有上一次的数据进行对比设置");
+                        ToastMaker.show(this, getResources().getString(R.string.set_body_fat_change_hint1));
                         return;
                     }
                     //当前数据的前一条数据对应历史数据中的倒数第二条

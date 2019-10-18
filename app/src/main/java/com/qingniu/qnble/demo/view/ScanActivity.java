@@ -185,14 +185,14 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onStopScan() {
                 QNLogUtils.log("ScanActivity", "onStopScan");
                 isScanning = false;
-                ToastMaker.show(ScanActivity.this, "已经停止扫描");
+                ToastMaker.show(ScanActivity.this,getResources().getString(R.string.scan_stopped));
             }
 
             @Override
             public void onScanFail(int code) {
                 isScanning = false;
                 QNLogUtils.log("ScanActivity", "onScanFail:" + code);
-                Toast.makeText(ScanActivity.this, "扫描异常，请重启手机蓝牙!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ScanActivity.this, getResources().getString(R.string.scan_exception)+":"+code, Toast.LENGTH_SHORT).show();
             }
 
             //广播秤专用
@@ -329,7 +329,7 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
                     listAdapter.notifyDataSetChanged();
                     startScan();
                 } else {
-                    ToastMaker.show(this, "正在扫描");
+                    ToastMaker.show(this, getResources().getString(R.string.scanning));
                 }
                 break;
             case R.id.stopBtn:
@@ -346,7 +346,7 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
                     e.printStackTrace();
                 }
                 if (validSecond == -1) {
-                    ToastMaker.show(this, "请输入正确的有效时间!");
+                    ToastMaker.show(this,getString(R.string.input_date_time));
                     return;
                 }
                 QNShareData qnShareData = QNUtils.decodeShareData(qrcode, validSecond, createQNUser(), new QNResultCallback() {
@@ -355,7 +355,7 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
                         QNLogUtils.log(TAG, "code:" + code);
                     }
                 });
-                String result = "解析失败";
+                String result =getResources().getString(R.string.decode_fail);
                 if (qnShareData != null) {
                     result = "qnShareData--sn：" + qnShareData.getSn() +
                             ";\nweight:" + qnShareData.getQNScaleData().getItemValue(QNIndicator.TYPE_WEIGHT) +
@@ -433,9 +433,9 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
         if (requestCode == AndroidPermissionCenter.REQUEST_EXTERNAL_STORAGE) {
             for (int i = 0; i < permissions.length; i++) {
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "" + "权限" + permissions[i] + "申请成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "" + getResources().getString(R.string.permission) + permissions[i] + getResources().getString(R.string.apply_for_to_success), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, "" + "权限" + permissions[i] + "申请失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "" + getResources().getString(R.string.permission)  + permissions[i] + getResources().getString(R.string.apply_for_to_fail), Toast.LENGTH_SHORT).show();
                 }
             }
         } else if (requestCode == AndroidPermissionCenter.REQUEST_CAMERA) {

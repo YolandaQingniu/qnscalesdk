@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="备注：(0 为 kg，默认值 1 为 lb,磅，所有秤都能够支持这个单位 2 为 斤，秤端如果不支持，则会显示kg 3 为 st，英石，秤端如果不支持，则会显示lb，的数值)"
+        android:text="@string/broadcast_hint1"
         android:textSize="12sp" />
 
     <LinearLayout
@@ -22,7 +22,7 @@
             android:id="@+id/unit_edit"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:hint="输入要切换的单位"
+            android:hint="@string/input_weight_unit"
             android:inputType="number"
             android:textSize="10sp" />
 
@@ -30,12 +30,12 @@
             android:id="@+id/setUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="设置秤单位" />
+            android:text="@string/set_scale_unit" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="此功能只对双向广播秤有效" />
+            android:text="@string/broadcast_hint2" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,7 +44,7 @@
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
-            android:text="收到实时重量："
+            android:text="@string/receive_real_time_weight"
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/weightTv"

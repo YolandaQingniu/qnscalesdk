@@ -141,11 +141,11 @@ public class SelfBroadcastScaleActivity extends AppCompatActivity {
         BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
 
         if (bluetoothAdapter == null) {
-            Toast.makeText(SelfBroadcastScaleActivity.this, "设备不支持", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SelfBroadcastScaleActivity.this,getResources().getString(R.string.device_not_support), Toast.LENGTH_SHORT).show();
             return;
         }
         if (bluetoothAdapter.getState() != BluetoothAdapter.STATE_ON) {
-            Toast.makeText(SelfBroadcastScaleActivity.this, "请打开蓝牙", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SelfBroadcastScaleActivity.this, getResources().getString(R.string.open_ble), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -164,7 +164,7 @@ public class SelfBroadcastScaleActivity extends AppCompatActivity {
     private void stopScan() {
         BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
         if (bluetoothAdapter == null) {
-            Toast.makeText(SelfBroadcastScaleActivity.this, "设备不支持", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SelfBroadcastScaleActivity.this, getResources().getString(R.string.device_not_support), Toast.LENGTH_SHORT).show();
             return;
         }
         bluetoothAdapter.stopLeScan(scanCallback);
@@ -210,18 +210,18 @@ public class SelfBroadcastScaleActivity extends AppCompatActivity {
     public void onViewClicked() {
         int unit;
         if (TextUtils.isEmpty(unitEdit.getText().toString())) {
-            ToastMaker.show(this, "设置的单位不能为空");
+            ToastMaker.show(this, getResources().getString(R.string.set_unit_is_empty));
             return;
         } else {
             try {
                 unit = Integer.parseInt(unitEdit.getText().toString());
             } catch (Exception e) {
-                ToastMaker.show(this, "请输入整数！");
+                ToastMaker.show(this,getResources().getString(R.string.input_int));
                 return;
             }
         }
         if (null == currentDevice) {
-            ToastMaker.show(this, "当前需要设置的设备不能为空");
+            ToastMaker.show(this, getResources().getString(R.string.device_set_empty));
             return;
         }
         currentDevice.syncUnit(unit, new QNResultCallback() {

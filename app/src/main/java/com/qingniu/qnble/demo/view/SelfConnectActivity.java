@@ -161,7 +161,7 @@ public class SelfConnectActivity extends AppCompatActivity implements View.OnCli
                     @Override
                     public void run() {
                         setBleStatus(QNScaleStatus.STATE_CONNECTED);
-                        Toast.makeText(SelfConnectActivity.this, "连接成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SelfConnectActivity.this, getResources().getString(R.string.connect_successfully), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -584,7 +584,7 @@ public class SelfConnectActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onGetElectric(QNBleDevice device, int electric) {
-                String text = "收到电池电量百分比:" + electric;
+                String text = getResources().getString(R.string.percentage_of_battery_received) + electric;
                 Log.d(TAG, text);
                 if (electric == DecoderConst.NONE_BATTERY_VALUE) {//获取电池信息失败
                     return;
@@ -683,74 +683,74 @@ public class SelfConnectActivity extends AppCompatActivity implements View.OnCli
         String btnString;
         switch (bleStatus) {
             case QNScaleStatus.STATE_CONNECTING: {
-                stateString = "正在连接";
-                btnString = "断开连接";
+                stateString = getResources().getString(R.string.connecting);
+                btnString = getResources().getString(R.string.disconnected);
                 mIsConnected = true;
                 break;
             }
             case QNScaleStatus.STATE_CONNECTED: {
-                stateString = "已连接";
-                btnString = "断开连接";
+                stateString = getResources().getString(R.string.connected);
+                btnString = getResources().getString(R.string.disconnected);
                 mIsConnected = true;
                 break;
             }
             case QNScaleStatus.STATE_DISCONNECTING: {
-                stateString = "正在断开连接";
-                btnString = "连接";
+                stateString = getResources().getString(R.string.disconnect_in_progress);
+                btnString = getResources().getString(R.string.connect);
                 mIsConnected = false;
 
                 break;
             }
             case QNScaleStatus.STATE_LINK_LOSS: {
-                stateString = "连接已断开";
-                btnString = "连接";
+                stateString = getResources().getString(R.string.connection_disconnected);
+                btnString = getResources().getString(R.string.connect);
                 mIsConnected = false;
 
                 break;
             }
             case QNScaleStatus.STATE_START_MEASURE: {
-                stateString = "正在测量";
-                btnString = "断开连接";
+                stateString = getResources().getString(R.string.measuring);
+                btnString =getResources().getString(R.string.disconnected);
                 break;
             }
             case QNScaleStatus.STATE_REAL_TIME: {
-                stateString = "正在测量实时体重";
-                btnString = "断开连接";
+                stateString =getResources().getString(R.string.real_time_weight_measurement);
+                btnString = getResources().getString(R.string.disconnected);
                 break;
             }
             case QNScaleStatus.STATE_BODYFAT: {
-                stateString = "正在测量阻抗";
-                btnString = "断开连接";
+                stateString = getResources().getString(R.string.impedance_measured);
+                btnString = getResources().getString(R.string.disconnected);
                 break;
             }
             case QNScaleStatus.STATE_HEART_RATE: {
-                stateString = "正在测量心率";
-                btnString = "断开连接";
+                stateString = getResources().getString(R.string.measuring_heart_rate);
+                btnString = getResources().getString(R.string.disconnected);
                 break;
             }
             case QNScaleStatus.STATE_MEASURE_COMPLETED: {
-                stateString = "测量完成";
-                btnString = "断开连接";
+                stateString = getResources().getString(R.string.measure_complete);
+                btnString = getResources().getString(R.string.disconnected);
                 break;
             }
             case QNScaleStatus.STATE_WIFI_BLE_START_NETWORK:
-                stateString = "开始设置WiFi";
-                btnString = "断开连接";
+                stateString =getResources().getString(R.string.start_set_wifi);
+                btnString = getResources().getString(R.string.disconnected);
                 Log.d(TAG, "开始设置WiFi");
                 break;
             case QNScaleStatus.STATE_WIFI_BLE_NETWORK_FAIL:
-                stateString = "设置WiFi失败";
-                btnString = "断开连接";
+                stateString = getResources().getString(R.string.failed_to_set_wifi);
+                btnString = getResources().getString(R.string.disconnected);
                 Log.d(TAG, "设置WiFi失败");
                 break;
             case QNScaleStatus.STATE_WIFI_BLE_NETWORK_SUCCESS:
-                stateString = "设置WiFi成功";
-                btnString = "断开连接";
+                stateString =getResources().getString(R.string.success_to_set_wifi);
+                btnString =getResources().getString(R.string.disconnected);
                 Log.d(TAG, "设置WiFi成功");
                 break;
             default: {
-                stateString = "连接已断开";
-                btnString = "连接";
+                stateString = getResources().getString(R.string.connection_disconnected);
+                btnString = getResources().getString(R.string.connect);
                 mIsConnected = false;
                 break;
             }

@@ -231,28 +231,28 @@ public class CustomSettingActivity extends AppCompatActivity implements RadioGro
             clothesWeight = Double.parseDouble(user_clothes_edt.getText().toString().trim());
         } catch (Exception e) {
             e.printStackTrace();
-            ToastMaker.show(this, "请填写正确的衣服重量");
+            ToastMaker.show(this, getResources().getString(R.string.input_cloth));
             return true;
         }
         if (clothesWeight < 0) {
-            ToastMaker.show(this, "请填写正确的衣服重量");
+            ToastMaker.show(this, getResources().getString(R.string.input_cloth));
             return true;
         }
 
         if (userId.isEmpty()) {
-            ToastMaker.show(this, "用户id不能为空");
+            ToastMaker.show(this, getResources().getString(R.string.user_id_empty));
             return true;
         } else if (mUserGenderGrp.getCheckedRadioButtonId() == -1) {
-            ToastMaker.show(this, "请选择性别");
+            ToastMaker.show(this,getResources().getString(R.string.select_grander));
             return true;
         } else if (mHeight == 0) {
-            ToastMaker.show(this, "请输入身高");
+            ToastMaker.show(this, getResources().getString(R.string.input_height));
             return true;
         } else if (mBirthday == null) {
-            ToastMaker.show(this, "请输入出生日期");
+            ToastMaker.show(this,getString(R.string.input_birthday));
             return true;
         } else if (mUserUnitGrp.getCheckedRadioButtonId() == -1) {
-            ToastMaker.show(this, "请选择重量单位");
+            ToastMaker.show(this,getResources().getString(R.string.select_weight));
             return true;
         }
 
