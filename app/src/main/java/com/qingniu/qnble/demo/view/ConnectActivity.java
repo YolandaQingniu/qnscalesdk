@@ -300,7 +300,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onGetElectric(QNBleDevice device, int electric) {
-                String text = "收到电池电量百分比:" + electric;
+                String text =getResources().getString(R.string.percentage_of_battery_received) + electric;
                 Log.d("ConnectActivity", text);
                 if (electric == DecoderConst.NONE_BATTERY_VALUE) {//获取电池信息失败
                     return;
