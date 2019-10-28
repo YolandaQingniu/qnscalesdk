@@ -10,10 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -21,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qingniu.qnble.demo.R;
+import com.qingniu.qnble.demo.adapter.ListAdapter;
 import com.qingniu.qnble.demo.bean.User;
 import com.qingniu.qnble.demo.util.AndroidPermissionCenter;
 import com.qingniu.qnble.demo.util.ToastMaker;
@@ -108,6 +106,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
 
     private QNScaleData currentQNScaleData;
     private List<QNScaleData> historyQNScaleData = new ArrayList<>();
+    private ListAdapter listAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -122,12 +121,12 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
         ButterKnife.bind(this);
+        initIntent();
         initView();
         initData();
     }
 
     private void initData() {
-        initIntent();
         initBleConnectStatus();
         initUserData(); //设置数据监听器,返回数据,需在连接当前设备前设置
         //已经连接设备先断开设备,再连接
@@ -300,7 +299,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onGetElectric(QNBleDevice device, int electric) {
-                String text =getResources().getString(R.string.percentage_of_battery_received) + electric;
+                String text = "收到电池电量百分比:" + electric;
                 Log.d("ConnectActivity", text);
                 if (electric == DecoderConst.NONE_BATTERY_VALUE) {//获取电池信息失败
                     return;
@@ -337,49 +336,13 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
     private void initView() {
         mConnectBtn.setOnClickListener(this);
         mBackTv.setOnClickListener(this);
+        listAdapter = new ListAdapter(mDatas,mQNBleApi,createQNUser());
         mListView.setAdapter(listAdapter);
         listAdapter.notifyDataSetChanged();
     }
 
 
-    private BaseAdapter listAdapter = new BaseAdapter() {
-        @Override
-        public int getCount() {
-            return mDatas.size();
-        }
 
-        @Override
-        public Object getItem(int position) {
-            return mDatas.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return mDatas.get(position).hashCode();
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_data, null);
-            }
-            TextView indicateNameTv = (TextView) convertView.findViewById(R.id.indicate_nameTv);
-            TextView indicateValueTv = (TextView) convertView.findViewById(R.id.indicate_valueTv);
-            TextView indicateLevelTv = (TextView) convertView.findViewById(R.id.indicate_levelTv);
-            QNScaleItemData itemData = mDatas.get(position);
-
-            indicateNameTv.setText(itemData.getName());
-            //sdk返回的数据单位一直不变，用户需要自己去转化为自己需要的单位数据
-            //和重量有关的指标
-            if (itemData.getType() == QNIndicator.TYPE_WEIGHT || itemData.getType() == QNIndicator.TYPE_BONE
-                    || itemData.getType() == QNIndicator.TYPE_MUSCLE_MASS) {
-                indicateValueTv.setText(initWeight(itemData.getValue()));
-            } else {
-                indicateValueTv.setText(String.valueOf(itemData.getValue()));
-            }
-            return convertView;
-        }
-    };
 
 
     @Override

@@ -132,6 +132,27 @@
     <string name="aim_qr_code">Align qr code</string>
     <string name="open_flash">Turn on the flash</string>
     <string name="set_wifi_setting">Set WIFI configuration</string>
-
-
+    <string name="weight">weight</string>
+    <string name="is_peel">is peel</string>
+    <string name="is_negative">is negative</string>
+    <string name="is_overload">is overload</string>
+    <string name="type_very_low">Severe low</string>
+    <string name="type_low">low</string>
+    <string name="type_standar">standard</string>
+    <string name="type_high">high</string>
+    <string name="type_very_high">Severe high</string>
+    <string name="type_sufficient">sufficient</string>
+    <string name="type_shape_fueling">endomorphy type</string>
+    <string name="type_shape_full_figured">Full-figured type</string>
+    <string name="type_shape_invisible_obesity">Invisible obesity type</string>
+    <string name="type_shape_standard">standard type</string>
+    <string name="type_shape_standard_muscle">Standard muscle type</string>
+    <string name="type_shape_very_muscular">Very muscular type</string>
+    <string name="type_shape_lean">Lean type</string>
+    <string name="type_shape_lean_and_muscular">Lean and muscular type</string>
+    <string name="type_shape_hypokinesia">hypokinesia type</string>
+    <string name="type_reach_standard">Up to standard</string>
+    <string name="type_not_reach_standard">Not up to standard</string>
+    <string name="type_shape_none">No type</string>
+    <string name="no_standard">No standard </string>
 </resources>

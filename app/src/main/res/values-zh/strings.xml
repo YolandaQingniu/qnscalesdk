@@ -132,6 +132,27 @@
     <string name="aim_qr_code">对准二维码</string>
     <string name="open_flash">打开闪光灯</string>
     <string name="set_wifi_setting">设置WIFI配置</string>
-
-
+    <string name="weight">重量</string>
+    <string name="is_peel">是否去皮</string>
+    <string name="is_negative">是否负重量</string>
+    <string name="is_overload">是否超重</string>
+    <string name="type_very_low">严重偏低</string>
+    <string name="type_low">偏低</string>
+    <string name="type_standar">标准</string>
+    <string name="type_high">偏高</string>
+    <string name="type_very_high">严重偏高</string>
+    <string name="type_sufficient">充足</string>
+    <string name="type_shape_fueling">肥胖型</string>
+    <string name="type_shape_full_figured">偏胖型</string>
+    <string name="type_shape_invisible_obesity">隐形肥胖型</string>
+    <string name="type_shape_standard">标准型</string>
+    <string name="type_shape_standard_muscle">标准肌肉型</string>
+    <string name="type_shape_very_muscular">非常肌肉型</string>
+    <string name="type_shape_lean">偏瘦型</string>
+    <string name="type_shape_lean_and_muscular">偏瘦肌肉型</string>
+    <string name="type_shape_hypokinesia">运动不足型</string>
+    <string name="type_reach_standard">达标</string>
+    <string name="type_not_reach_standard">不达标</string>
+    <string name="type_shape_none">无体型值</string>
+    <string name="no_standard">无标准</string>
 </resources>

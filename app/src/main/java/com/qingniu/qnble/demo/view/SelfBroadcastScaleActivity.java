@@ -12,10 +12,6 @@ import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -23,17 +19,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qingniu.qnble.demo.R;
+import com.qingniu.qnble.demo.adapter.ListAdapter;
 import com.qingniu.qnble.demo.bean.User;
 import com.qingniu.qnble.demo.util.ToastMaker;
 import com.qingniu.qnble.demo.util.UserConst;
-import com.yolanda.health.qnblesdk.constant.QNIndicator;
+import com.qingniu.qnble.utils.QNLogUtils;
+import com.yolanda.health.qnblesdk.constant.CheckStatus;
+import com.yolanda.health.qnblesdk.constant.QNDeviceType;
 import com.yolanda.health.qnblesdk.constant.UserGoal;
 import com.yolanda.health.qnblesdk.constant.UserShape;
 import com.yolanda.health.qnblesdk.listener.QNResultCallback;
 import com.yolanda.health.qnblesdk.out.QNBleApi;
 import com.yolanda.health.qnblesdk.out.QNBleBroadcastDevice;
 import com.yolanda.health.qnblesdk.out.QNBleDevice;
-import com.yolanda.health.qnblesdk.out.QNConfig;
 import com.yolanda.health.qnblesdk.out.QNScaleData;
 import com.yolanda.health.qnblesdk.out.QNScaleItemData;
 import com.yolanda.health.qnblesdk.out.QNUser;
@@ -47,7 +45,7 @@ import butterknife.OnClick;
 
 /**
  * author: yolanda-zhao
- * description:
+ * description: 自主广播秤解析界面
  * date: 2019/9/9
  */
 
@@ -70,6 +68,7 @@ public class SelfBroadcastScaleActivity extends AppCompatActivity {
     private List<QNScaleItemData> mDatas = new ArrayList<>();
     private int currentMeasureCode;
     private boolean isScanning;
+    private ListAdapter listAdapter;
 
     private Handler mHandler = new Handler(Looper.myLooper());
 
@@ -97,6 +96,25 @@ public class SelfBroadcastScaleActivity extends AppCompatActivity {
         public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
 
             if (device == null) {
+                return;
+            }
+
+            QNBleDevice qnBleDevice = mQnbleApi.buildDevice(device, rssi, scanRecord, new QNResultCallback() {
+                @Override
+                public void onResult(int code, String msg) {
+                    if (code != CheckStatus.OK.getCode()) {
+                        QNLogUtils.log("LeScanCallback", msg);
+                    }
+                }
+            });
+
+            if (qnBleDevice == null) {
+                //非公司秤直接返回
+                return;
+            }
+
+            if (qnBleDevice.getDeviceType() != QNDeviceType.SCALE_BROADCAST) {
+                //非广播秤，直接返回
                 return;
             }
 
@@ -141,7 +159,7 @@ public class SelfBroadcastScaleActivity extends AppCompatActivity {
         BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
 
         if (bluetoothAdapter == null) {
-            Toast.makeText(SelfBroadcastScaleActivity.this,getResources().getString(R.string.device_not_support), Toast.LENGTH_SHORT).show();
+            Toast.makeText(SelfBroadcastScaleActivity.this, getResources().getString(R.string.device_not_support), Toast.LENGTH_SHORT).show();
             return;
         }
         if (bluetoothAdapter.getState() != BluetoothAdapter.STATE_ON) {
@@ -172,11 +190,8 @@ public class SelfBroadcastScaleActivity extends AppCompatActivity {
     }
 
     private void initData() {
-
-        listView.setAdapter(listAdapter);
-        listAdapter.notifyDataSetChanged();
-
         mQnbleApi = QNBleApi.getInstance(this);
+
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -184,23 +199,9 @@ public class SelfBroadcastScaleActivity extends AppCompatActivity {
             mUser = intent.getParcelableExtra(UserConst.USER);
             qnUser = createQNUser();
         }
-
-        QNConfig mQnConfig = mQnbleApi.getConfig();
-        mQnConfig.setAllowDuplicates(false);
-        mQnConfig.setDuration(0);
-        mQnConfig.setOnlyScreenOn(false);
-        /**
-         * 强化广播秤信号，这个只对广播秤有效
-         */
-        mQnConfig.setEnhanceBleBroadcast(true);
-        //设置扫描对象
-        mQnConfig.save(new QNResultCallback() {
-            @Override
-            public void onResult(int i, String s) {
-                Log.d("ScanActivity", "initData:" + s);
-            }
-        });
-
+        listAdapter = new ListAdapter(mDatas,mQnbleApi,qnUser);
+        listView.setAdapter(listAdapter);
+        listAdapter.notifyDataSetChanged();
         //开启扫描
         startScan();
 
@@ -216,7 +217,7 @@ public class SelfBroadcastScaleActivity extends AppCompatActivity {
             try {
                 unit = Integer.parseInt(unitEdit.getText().toString());
             } catch (Exception e) {
-                ToastMaker.show(this,getResources().getString(R.string.input_int));
+                ToastMaker.show(this, getResources().getString(R.string.input_int));
                 return;
             }
         }
@@ -240,44 +241,6 @@ public class SelfBroadcastScaleActivity extends AppCompatActivity {
         stopScan();
     }
 
-    private BaseAdapter listAdapter = new BaseAdapter() {
-        @Override
-        public int getCount() {
-            return mDatas.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mDatas.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return mDatas.get(position).hashCode();
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_data, null);
-            }
-            TextView indicateNameTv = (TextView) convertView.findViewById(R.id.indicate_nameTv);
-            TextView indicateValueTv = (TextView) convertView.findViewById(R.id.indicate_valueTv);
-            TextView indicateLevelTv = (TextView) convertView.findViewById(R.id.indicate_levelTv);
-            QNScaleItemData itemData = mDatas.get(position);
-
-            indicateNameTv.setText(itemData.getName());
-            //sdk返回的数据单位一直不变，用户需要自己去转化为自己需要的单位数据
-            //和重量有关的指标
-            if (itemData.getType() == QNIndicator.TYPE_WEIGHT || itemData.getType() == QNIndicator.TYPE_BONE
-                    || itemData.getType() == QNIndicator.TYPE_MUSCLE_MASS) {
-                indicateValueTv.setText(initWeight(itemData.getValue()));
-            } else {
-                indicateValueTv.setText(String.valueOf(itemData.getValue()));
-            }
-            return convertView;
-        }
-    };
 
     private String initWeight(double weight) {
         int unit = mQnbleApi.getConfig().getUnit();

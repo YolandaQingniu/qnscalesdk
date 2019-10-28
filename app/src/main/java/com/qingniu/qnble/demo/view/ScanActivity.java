@@ -41,6 +41,7 @@ import com.yolanda.health.qnblesdk.listener.QNResultCallback;
 import com.yolanda.health.qnblesdk.out.QNBleApi;
 import com.yolanda.health.qnblesdk.out.QNBleBroadcastDevice;
 import com.yolanda.health.qnblesdk.out.QNBleDevice;
+import com.yolanda.health.qnblesdk.out.QNBleKitchenDevice;
 import com.yolanda.health.qnblesdk.out.QNConfig;
 import com.yolanda.health.qnblesdk.out.QNShareData;
 import com.yolanda.health.qnblesdk.out.QNUser;
@@ -185,20 +186,25 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onStopScan() {
                 QNLogUtils.log("ScanActivity", "onStopScan");
                 isScanning = false;
-                ToastMaker.show(ScanActivity.this,getResources().getString(R.string.scan_stopped));
+                ToastMaker.show(ScanActivity.this, getResources().getString(R.string.scan_stopped));
             }
 
             @Override
             public void onScanFail(int code) {
                 isScanning = false;
                 QNLogUtils.log("ScanActivity", "onScanFail:" + code);
-                Toast.makeText(ScanActivity.this, getResources().getString(R.string.scan_exception)+":"+code, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ScanActivity.this, getResources().getString(R.string.scan_exception) + ":" + code, Toast.LENGTH_SHORT).show();
             }
 
-            //广播秤专用
+
             @Override
             public void onBroadcastDeviceDiscover(QNBleBroadcastDevice device) {
+                //广播秤专用,具体使用参考 BroadcastScaleActivity
+            }
 
+            @Override
+            public void onKitchenDeviceDiscover(QNBleKitchenDevice device) {
+                //厨房秤专用，具体使用参考 KitchenScaleActivity
             }
         });
 
@@ -292,9 +298,12 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
             });
             wifiSetDialog.show();
         } else {
+            // SCALE_BROADCAST
             if (device.getDeviceType() == QNDeviceType.SCALE_BROADCAST) {
                 startActivity(BroadcastScaleActivity.getCallIntent(ScanActivity.this, mUser, device));
-            } else {
+            } else if (device.getDeviceType() == QNDeviceType.SCALE_KITCHEN) {// SCALE_KITCHEN
+                startActivity(kitchenScaleActivity.getCallIntent(ScanActivity.this, device));
+            } else {//SCALE_BLE_DEFAULT
                 //连接设备
                 connectDevice(device);
             }
@@ -346,7 +355,7 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
                     e.printStackTrace();
                 }
                 if (validSecond == -1) {
-                    ToastMaker.show(this,getString(R.string.input_date_time));
+                    ToastMaker.show(this, getString(R.string.input_date_time));
                     return;
                 }
                 QNShareData qnShareData = QNUtils.decodeShareData(qrcode, validSecond, createQNUser(), new QNResultCallback() {
@@ -355,7 +364,7 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
                         QNLogUtils.log(TAG, "code:" + code);
                     }
                 });
-                String result =getResources().getString(R.string.decode_fail);
+                String result = getResources().getString(R.string.decode_fail);
                 if (qnShareData != null) {
                     result = "qnShareData--sn：" + qnShareData.getSn() +
                             ";\nweight:" + qnShareData.getQNScaleData().getItemValue(QNIndicator.TYPE_WEIGHT) +
@@ -435,7 +444,7 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "" + getResources().getString(R.string.permission) + permissions[i] + getResources().getString(R.string.apply_for_to_success), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, "" + getResources().getString(R.string.permission)  + permissions[i] + getResources().getString(R.string.apply_for_to_fail), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "" + getResources().getString(R.string.permission) + permissions[i] + getResources().getString(R.string.apply_for_to_fail), Toast.LENGTH_SHORT).show();
                 }
             }
         } else if (requestCode == AndroidPermissionCenter.REQUEST_CAMERA) {

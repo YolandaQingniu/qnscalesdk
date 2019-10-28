@@ -17,16 +17,14 @@ import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qingniu.qnble.demo.R;
+import com.qingniu.qnble.demo.adapter.ListAdapter;
 import com.qingniu.qnble.demo.bean.User;
 import com.qingniu.qnble.demo.util.UserConst;
 import com.qingniu.qnble.utils.QNLogUtils;
@@ -60,7 +58,7 @@ import butterknife.ButterKnife;
 
 /**
  * author: yolanda-zhao
- * description:自主连接测量界面
+ * description:自主普通秤连接测量界面
  * date: 2019/9/6
  */
 
@@ -114,6 +112,7 @@ public class SelfConnectActivity extends AppCompatActivity implements View.OnCli
 
     private QNScaleData currentQNScaleData;
     private List<QNScaleData> historyQNScaleData = new ArrayList<>();
+    private ListAdapter listAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -128,6 +127,7 @@ public class SelfConnectActivity extends AppCompatActivity implements View.OnCli
             }
         });
         ButterKnife.bind(this);
+        initIntent();
         initView();
         initData();
     }
@@ -304,7 +304,7 @@ public class SelfConnectActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initData() {
-        initIntent();
+
         initBleConnectStatus();
         initUserData(); //设置数据监听器,返回数据,需在连接当前设备前设置
 
@@ -619,49 +619,10 @@ public class SelfConnectActivity extends AppCompatActivity implements View.OnCli
     private void initView() {
         mConnectBtn.setOnClickListener(this);
         mBackTv.setOnClickListener(this);
+        listAdapter = new ListAdapter(mDatas,mQNBleApi,createQNUser());
         mListView.setAdapter(listAdapter);
         listAdapter.notifyDataSetChanged();
     }
-
-
-    private BaseAdapter listAdapter = new BaseAdapter() {
-        @Override
-        public int getCount() {
-            return mDatas.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mDatas.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return mDatas.get(position).hashCode();
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_data, null);
-            }
-            TextView indicateNameTv = (TextView) convertView.findViewById(R.id.indicate_nameTv);
-            TextView indicateValueTv = (TextView) convertView.findViewById(R.id.indicate_valueTv);
-            TextView indicateLevelTv = (TextView) convertView.findViewById(R.id.indicate_levelTv);
-            QNScaleItemData itemData = mDatas.get(position);
-
-            indicateNameTv.setText(itemData.getName());
-            //sdk返回的数据单位一直不变，用户需要自己去转化为自己需要的单位数据
-            //和重量有关的指标
-            if (itemData.getType() == QNIndicator.TYPE_WEIGHT || itemData.getType() == QNIndicator.TYPE_BONE
-                    || itemData.getType() == QNIndicator.TYPE_MUSCLE_MASS) {
-                indicateValueTv.setText(initWeight(itemData.getValue()));
-            } else {
-                indicateValueTv.setText(String.valueOf(itemData.getValue()));
-            }
-            return convertView;
-        }
-    };
 
 
     @Override

@@ -6,20 +6,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.qingniu.qnble.demo.R;
+import com.qingniu.qnble.demo.adapter.ListAdapter;
 import com.qingniu.qnble.demo.bean.User;
 import com.qingniu.qnble.demo.util.ToastMaker;
 import com.qingniu.qnble.demo.util.UserConst;
-import com.yolanda.health.qnblesdk.constant.QNIndicator;
 import com.yolanda.health.qnblesdk.constant.UserGoal;
 import com.yolanda.health.qnblesdk.constant.UserShape;
 import com.yolanda.health.qnblesdk.listener.QNBleDeviceDiscoveryListener;
@@ -27,6 +23,7 @@ import com.yolanda.health.qnblesdk.listener.QNResultCallback;
 import com.yolanda.health.qnblesdk.out.QNBleApi;
 import com.yolanda.health.qnblesdk.out.QNBleBroadcastDevice;
 import com.yolanda.health.qnblesdk.out.QNBleDevice;
+import com.yolanda.health.qnblesdk.out.QNBleKitchenDevice;
 import com.yolanda.health.qnblesdk.out.QNConfig;
 import com.yolanda.health.qnblesdk.out.QNScaleData;
 import com.yolanda.health.qnblesdk.out.QNScaleItemData;
@@ -39,6 +36,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 广播秤数据解析界面
+ */
 public class BroadcastScaleActivity extends AppCompatActivity {
 
     @BindView(R.id.setUnit)
@@ -57,6 +57,7 @@ public class BroadcastScaleActivity extends AppCompatActivity {
     private QNBleBroadcastDevice currentDevice;
     private List<QNScaleItemData> mDatas = new ArrayList<>();
     private int currentMeasureCode;
+    private ListAdapter listAdapter;
 
     public static Intent getCallIntent(Context context, User user, QNBleDevice device) {
         return new Intent(context, BroadcastScaleActivity.class)
@@ -74,19 +75,16 @@ public class BroadcastScaleActivity extends AppCompatActivity {
     }
 
     private void initData() {
-
-        listView.setAdapter(listAdapter);
-        listAdapter.notifyDataSetChanged();
-
         mQnbleApi = QNBleApi.getInstance(this);
-
         Intent intent = getIntent();
         if (intent != null) {
             mBleDevice = intent.getParcelableExtra(UserConst.DEVICE);
             mUser = intent.getParcelableExtra(UserConst.USER);
             qnUser = createQNUser();
         }
-
+        listAdapter = new ListAdapter(mDatas, mQnbleApi,qnUser);
+        listView.setAdapter(listAdapter);
+        listAdapter.notifyDataSetChanged();
         QNConfig mQnConfig = mQnbleApi.getConfig();
         mQnConfig.setAllowDuplicates(false);
         mQnConfig.setDuration(0);
@@ -146,6 +144,11 @@ public class BroadcastScaleActivity extends AppCompatActivity {
                     }
                 }
             }
+
+            @Override
+            public void onKitchenDeviceDiscover(QNBleKitchenDevice device) {
+                //厨房秤专用
+            }
         });
         mQnbleApi.startBleDeviceDiscovery(new QNResultCallback() {
             @Override
@@ -195,44 +198,6 @@ public class BroadcastScaleActivity extends AppCompatActivity {
         });
     }
 
-    private BaseAdapter listAdapter = new BaseAdapter() {
-        @Override
-        public int getCount() {
-            return mDatas.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mDatas.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return mDatas.get(position).hashCode();
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_data, null);
-            }
-            TextView indicateNameTv = (TextView) convertView.findViewById(R.id.indicate_nameTv);
-            TextView indicateValueTv = (TextView) convertView.findViewById(R.id.indicate_valueTv);
-            TextView indicateLevelTv = (TextView) convertView.findViewById(R.id.indicate_levelTv);
-            QNScaleItemData itemData = mDatas.get(position);
-
-            indicateNameTv.setText(itemData.getName());
-            //sdk返回的数据单位一直不变，用户需要自己去转化为自己需要的单位数据
-            //和重量有关的指标
-            if (itemData.getType() == QNIndicator.TYPE_WEIGHT || itemData.getType() == QNIndicator.TYPE_BONE
-                    || itemData.getType() == QNIndicator.TYPE_MUSCLE_MASS) {
-                indicateValueTv.setText(initWeight(itemData.getValue()));
-            } else {
-                indicateValueTv.setText(String.valueOf(itemData.getValue()));
-            }
-            return convertView;
-        }
-    };
 
     private String initWeight(double weight) {
         int unit = mQnbleApi.getConfig().getUnit();
