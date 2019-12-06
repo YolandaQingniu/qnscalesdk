@@ -287,7 +287,9 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                 Log.d("ConnectActivity", "收到存储数据");
                 if (storedDataList != null && storedDataList.size() > 0) {
                     QNScaleStoreData data = storedDataList.get(0);
-                    Log.d("ConnectActivity", "收到存储数据:" + data.getWeight());
+                    for(int i =0;i<storedDataList.size();i++){
+                        Log.d("ConnectActivity", "收到存储数据:" + storedDataList.get(i).getWeight());
+                    }
                     QNUser qnUser = createQNUser();
                     data.setUser(qnUser);
                     QNScaleData qnScaleData = data.generateScaleData();

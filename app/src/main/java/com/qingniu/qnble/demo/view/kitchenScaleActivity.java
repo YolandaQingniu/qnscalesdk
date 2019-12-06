@@ -9,7 +9,6 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.qingniu.qnble.demo.R;
-import com.qingniu.qnble.demo.util.UserConst;
 import com.yolanda.health.qnblesdk.listener.QNBleDeviceDiscoveryListener;
 import com.yolanda.health.qnblesdk.listener.QNResultCallback;
 import com.yolanda.health.qnblesdk.out.QNBleApi;
@@ -43,11 +42,11 @@ public class kitchenScaleActivity extends AppCompatActivity {
 
 
     private QNBleApi mQnbleApi;
-    private QNBleDevice mBleDevice;
+    private QNBleKitchenDevice mBleDevice;
 
-    public static Intent getCallIntent(Context context, QNBleDevice device) {
-        return new Intent(context, kitchenScaleActivity.class)
-                .putExtra(UserConst.DEVICE, device);
+
+    public static Intent getCallIntent(Context context) {
+        return new Intent(context, kitchenScaleActivity.class);
     }
 
     @Override
@@ -60,12 +59,6 @@ public class kitchenScaleActivity extends AppCompatActivity {
 
     private void initData() {
         mQnbleApi = QNBleApi.getInstance(this);
-
-        Intent intent = getIntent();
-        if (intent != null) {
-            mBleDevice = intent.getParcelableExtra(UserConst.DEVICE);
-        }
-
         QNConfig mQnConfig = mQnbleApi.getConfig();
         mQnConfig.setAllowDuplicates(false);
         mQnConfig.setDuration(0);
@@ -108,6 +101,9 @@ public class kitchenScaleActivity extends AppCompatActivity {
 
             @Override
             public void onKitchenDeviceDiscover(QNBleKitchenDevice device) {
+                if (null == mBleDevice) {
+                    mBleDevice = device;
+                }
                 //厨房秤专用
                 if (null != device && device.getMac().equals(mBleDevice.getMac())) {
                     macTv.setText(device.getMac());

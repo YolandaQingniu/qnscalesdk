@@ -65,7 +65,12 @@
         <activity
             android:name=".view.CustomSettingActivity"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".view.kitchenScaleActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.SelfKitchenScaleActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

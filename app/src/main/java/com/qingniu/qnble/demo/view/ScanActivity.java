@@ -90,6 +90,10 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
     TextView rssiTv;
     @BindView(R.id.lvHeadLay)
     LinearLayout lvHeadLay;
+    @BindView(R.id.qr_test_btn)
+    Button qrTestBtn;
+    @BindView(R.id.kitchenBtn)
+    Button kitchenBtn;
 
     private QNBleApi mQNBleApi;
     private User mUser;
@@ -169,6 +173,37 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
 
         mListView.setOnItemClickListener(this);
 
+
+    }
+
+    private void initData() {
+        mScanAppid.setText("UserId : " + mUser.getUserId());
+        QNConfig mQnConfig = mQNBleApi.getConfig();//获取上次设置的对象,未设置获取的是默认对象
+        mQnConfig.setAllowDuplicates(mConfig.isAllowDuplicates());
+        mQnConfig.setDuration(mConfig.getDuration());
+        //此API已废弃
+        // mQnConfig.setScanOutTime(mConfig.getScanOutTime());
+        mQnConfig.setConnectOutTime(mConfig.getConnectOutTime());
+        mQnConfig.setUnit(mConfig.getUnit());
+        mQnConfig.setOnlyScreenOn(mConfig.isOnlyScreenOn());
+        /**
+         * 强化广播秤信号，此选项只对广播秤有效
+         */
+        mQnConfig.setEnhanceBleBroadcast(mConfig.isEnhanceBleBroadcast());
+        //设置扫描对象
+        mQnConfig.save(new QNResultCallback() {
+            @Override
+            public void onResult(int i, String s) {
+                Log.d("ScanActivity", "initData:" + s);
+            }
+        });
+        wifiSetDialog = new WIFISetDialog(ScanActivity.this);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         mQNBleApi.setBleDeviceDiscoveryListener(new QNBleDeviceDiscoveryListener() {
             @Override
             public void onDeviceDiscover(QNBleDevice device) {
@@ -207,37 +242,6 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
                 //厨房秤专用，具体使用参考 KitchenScaleActivity
             }
         });
-
-    }
-
-    private void initData() {
-        mScanAppid.setText("UserId : " + mUser.getUserId());
-        QNConfig mQnConfig = mQNBleApi.getConfig();//获取上次设置的对象,未设置获取的是默认对象
-        mQnConfig.setAllowDuplicates(mConfig.isAllowDuplicates());
-        mQnConfig.setDuration(mConfig.getDuration());
-        //此API已废弃
-        // mQnConfig.setScanOutTime(mConfig.getScanOutTime());
-        mQnConfig.setConnectOutTime(mConfig.getConnectOutTime());
-        mQnConfig.setUnit(mConfig.getUnit());
-        mQnConfig.setOnlyScreenOn(mConfig.isOnlyScreenOn());
-        /**
-         * 强化广播秤信号，此选项只对广播秤有效
-         */
-        mQnConfig.setEnhanceBleBroadcast(mConfig.isEnhanceBleBroadcast());
-        //设置扫描对象
-        mQnConfig.save(new QNResultCallback() {
-            @Override
-            public void onResult(int i, String s) {
-                Log.d("ScanActivity", "initData:" + s);
-            }
-        });
-        wifiSetDialog = new WIFISetDialog(ScanActivity.this);
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override
@@ -253,6 +257,7 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
     private void startScan() {
+
         mQNBleApi.startBleDeviceDiscovery(new QNResultCallback() {
             @Override
             public void onResult(int code, String msg) {
@@ -302,7 +307,7 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
             if (device.getDeviceType() == QNDeviceType.SCALE_BROADCAST) {
                 startActivity(BroadcastScaleActivity.getCallIntent(ScanActivity.this, mUser, device));
             } else if (device.getDeviceType() == QNDeviceType.SCALE_KITCHEN) {// SCALE_KITCHEN
-                startActivity(kitchenScaleActivity.getCallIntent(ScanActivity.this, device));
+
             } else {//SCALE_BLE_DEFAULT
                 //连接设备
                 connectDevice(device);
@@ -315,7 +320,7 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
 
-    @OnClick({R.id.scan_setting, R.id.scanBtn, R.id.stopBtn, R.id.qr_test_btn, R.id.scanQrcode})
+    @OnClick({R.id.scan_setting, R.id.scanBtn, R.id.stopBtn, R.id.qr_test_btn, R.id.scanQrcode, R.id.kitchenBtn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.scanQrcode:
@@ -372,6 +377,9 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 }
                 qr_data_tv.setText(result);
+                break;
+            case R.id.kitchenBtn:
+                startActivity(kitchenScaleActivity.getCallIntent(ScanActivity.this));
                 break;
         }
     }

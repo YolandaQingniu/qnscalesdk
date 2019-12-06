@@ -155,4 +155,5 @@
     <string name="type_not_reach_standard">不达标</string>
     <string name="type_shape_none">无体型值</string>
     <string name="no_standard">无标准</string>
+    <string name="kitchen_scale">厨房秤</string>
 </resources>

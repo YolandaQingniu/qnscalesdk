@@ -155,4 +155,5 @@
     <string name="type_not_reach_standard">Not up to standard</string>
     <string name="type_shape_none">No type</string>
     <string name="no_standard">No standard </string>
+    <string name="kitchen_scale">kitchen scale</string>
 </resources>
