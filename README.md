@@ -42,21 +42,21 @@
    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
    <!--如果是在线的sdk需要网络权限-->
    <uses-permission android:name="android.permission.INTERNET" />
-   <!--qnscalesdk:1.1.3-beta3 之前的版本需要增加此权限，之后的版本不需要-->
+   <!--qnscalesdk:1.1.3-beta3 之前(包含1.1.3-beta3)的版本需要增加此权限，之后的版本不需要-->
    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
-   <!--qnscalesdk:1.1.3-beta3 之后的版本需要增加此权限，之前的版本不需要-->
+   <!--qnscalesdk:1.1.3-beta3 之后(1.1.3-beta4开始)的版本需要增加此权限，之前的版本不需要-->
       <uses-permission android:name="android.permission.WAKE_LOCK" />
     ```
 * 需要在**AndroidManifest.xml**注册SDK中的组件：
 	```
-  <!--qnscalesdk:1.1.3-beta3之前的版本配置-->
+  <!--qnscalesdk:1.1.3-beta3之前(包含1.1.3-beta3)的版本配置-->
   <service android:name="com.qingniu.qnble.scanner.BleScanService"/>
   <service android:name="com.qingniu.scale.measure.ble.ScaleBleService"/>
    <service android:name="com.qingniu.scale.measure.broadcast.ScaleBroadcastService"/>
    ```
    ```
-  <!--qnscalesdk:1.1.3-beta3 之后的版本配置-->
+  <!--qnscalesdk:1.1.3-beta3 之后(1.1.3-beta4开始)的版本配置-->
    <service android:name="com.qingniu.qnble.scanner.BleScanService" android:permission="android.permission.BIND_JOB_SERVICE"/>
    <service android:name="com.qingniu.scale.measure.ble.ScaleBleService" android:permission="android.permission.BIND_JOB_SERVICE"/>
    <service android:name="com.qingniu.scale.measure.broadcast.ScaleBroadcastService" android:permission="android.permission.BIND_JOB_SERVICE"/>
