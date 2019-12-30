@@ -19,16 +19,16 @@
    ```
 * 在你的module的根目录下的**build.gradle**添加依赖
 	```
-	<!--这里的版本号，1.1.3-beta3可以指定为任意release版本-->
-	<!--如果希望一直使用最新版本可以替换 1.1.3-beta3 master-SNAPSHOT -->
+	<!--这里的版本号，1.1.3-beta4可以指定为任意release版本-->
+	<!--如果希望一直使用最新版本可以替换 1.1.3-beta4 master-SNAPSHOT -->
 	dependencies {
 	        ...
-	        compile 'com.github.YolandaQingniu:qnscalesdk:1.1.3-beta3'
+	        compile 'com.github.YolandaQingniu:qnscalesdk:1.1.3-beta4'
 	}
 	```
 	
 ### Eclipse
-* 下载最新的[jar和so库](https://github.com/YolandaQingniu/qnscalesdk/releases/download/1.1.3-beta3/qnsdk-1.1.3-beta3-Android.zip)，导入下载的`jar和so库`
+* 下载最新的[jar和so库](https://github.com/YolandaQingniu/qnscalesdk/releases/download/1.1.3-beta4/qnsdk-1.1.3-beta4-Android.zip)，导入下载的`jar和so库`
 * 在清单文件中申请蓝牙权限、位置权限、网络权限（离线SDK不需要）
     ```
    <!--蓝牙权限-->
@@ -42,16 +42,25 @@
    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
    <!--如果是在线的sdk需要网络权限-->
    <uses-permission android:name="android.permission.INTERNET" />
-   <!--28之后需要增加此权限-->
+   <!--qnscalesdk:1.1.3-beta3 之前的版本需要增加此权限，之后的版本不需要-->
    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+   <!--qnscalesdk:1.1.3-beta3 之后的版本需要增加此权限，之前的版本不需要-->
+      <uses-permission android:name="android.permission.WAKE_LOCK" />
     ```
 * 需要在**AndroidManifest.xml**注册SDK中的组件：
- 	``` 
+	```
+  <!--qnscalesdk:1.1.3-beta3之前的版本配置-->
   <service android:name="com.qingniu.qnble.scanner.BleScanService"/>
   <service android:name="com.qingniu.scale.measure.ble.ScaleBleService"/>
-  <!--需要兼容广播秤，需要再注册如下服务-->
    <service android:name="com.qingniu.scale.measure.broadcast.ScaleBroadcastService"/>
-   ```   
+   ```
+   ```
+  <!--qnscalesdk:1.1.3-beta3 之后的版本配置-->
+   <service android:name="com.qingniu.qnble.scanner.BleScanService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+   <service android:name="com.qingniu.scale.measure.ble.ScaleBleService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+   <service android:name="com.qingniu.scale.measure.broadcast.ScaleBroadcastService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+    ```
 * SDK中使用到了v4包的资源，开发者项目中需要引入v4包的资源
 
 ## 注意事项
