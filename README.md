@@ -4,10 +4,10 @@
 ### 混淆配置(proguard-rules)
 + -keep class com.qingniu.scale.model.BleScaleData{*;}
 
-##具体操作文档
+###具体操作文档
 [具体集成说明文档](https://yolandaqingniu.github.io/zh/android/)
 
-##AndroidX适配
+###AndroidX适配
 如果进行Androix的适配，[请接入适配Androidx的SDK](https://github.com/YolandaQingniu/qnscalesdkX)
 
 ### Android Studio
