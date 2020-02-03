@@ -156,4 +156,9 @@
     <string name="type_shape_none">No type</string>
     <string name="no_standard">No standard </string>
     <string name="kitchen_scale">kitchen scale</string>
+    <string name="fatty_liver_risk_level0">Level 0: no risk of fatty liver disease</string>
+    <string name="fatty_liver_risk_level1">Level I: risk of fatty liver disease</string>
+    <string name="fatty_liver_risk_level2">Level II: risk of mild fatty liver disease</string>
+    <string name="fatty_liver_risk_level3">Level III: risk of moderate fatty liver disease</string>
+    <string name="fatty_liver_risk_level4">IV:存在重度脂肪肝的风险</string>
 </resources>

@@ -335,6 +335,15 @@ public class IndicateUtils {
                     }
                 }
                 break;
+            case QNIndicator.TYPE_FATTY_LIVER_RISK:
+                List<String> fattyLiverRiskArray = Arrays.asList(context.getResources().getString(R.string.fatty_liver_risk_level0)
+                        , context.getResources().getString(R.string.fatty_liver_risk_level1), context.getResources().getString(R.string.fatty_liver_risk_level2)
+                        , context.getResources().getString(R.string.fatty_liver_risk_level3) , context.getResources().getString(R.string.fatty_liver_risk_level4)
+                );
+                indicateBean.setIndicateDescribe(fattyLiverRiskArray);
+                int level = (new Double(value)).intValue();
+                indicateBean.setCurrentIndicate(fattyLiverRiskArray.get(level));
+                break;
             default:
                 indicateBean.setIndicateDescribe(new ArrayList<String>());
                 indicateBean.setCurrentIndicate(context.getResources().getString(R.string.no_standard));

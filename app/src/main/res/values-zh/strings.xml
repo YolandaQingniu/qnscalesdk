@@ -156,4 +156,9 @@
     <string name="type_shape_none">无体型值</string>
     <string name="no_standard">无标准</string>
     <string name="kitchen_scale">厨房秤</string>
+    <string name="fatty_liver_risk_level0">0级:暂⽆肥胖性脂肪肝风险</string>
+    <string name="fatty_liver_risk_level1">I级:存在患上脂肪肝的风险</string>
+    <string name="fatty_liver_risk_level2">II级:存在轻度脂肪肝的风险</string>
+    <string name="fatty_liver_risk_level3">III级:存在中度脂肪肝的风险</string>
+    <string name="fatty_liver_risk_level4">IV级:存在重度脂肪肝的风险</string>
 </resources>
