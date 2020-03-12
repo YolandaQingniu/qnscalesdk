@@ -598,6 +598,11 @@ public class SelfConnectActivity extends AppCompatActivity implements View.OnCli
                 Log.d(TAG, "秤的连接状态是:" + status);
                 setBleStatus(status);
             }
+
+            @Override
+            public void onScaleEventChange(QNBleDevice qnBleDevice, int scaleEvent) {
+                Log.d("ConnectActivity", "秤返回的事件是:" + scaleEvent);
+            }
         });
     }
 

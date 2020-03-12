@@ -160,5 +160,25 @@
     <string name="fatty_liver_risk_level1">Level I: risk of fatty liver disease</string>
     <string name="fatty_liver_risk_level2">Level II: risk of mild fatty liver disease</string>
     <string name="fatty_liver_risk_level3">Level III: risk of moderate fatty liver disease</string>
-    <string name="fatty_liver_risk_level4">IV:存在重度脂肪肝的风险</string>
+    <string name="fatty_liver_risk_level4">IV:risk of severe fatty liver disease</string>
+    <string name="wsp_scale_config">WSP scale configuration</string>
+    <string name="register_user">registered user</string>
+    <string name="modify_user">Modify user information</string>
+    <string name="distribution_network_information">Configure the scale network</string>
+    <string name="SSID">WIFI SSID</string>
+    <string name="wifi_pwd">WIFI Pwd</string>
+    <string name="server_url">Server URL</string>
+    <string name="ota_url">OTA URL</string>
+    <string name="secret_key">secret key</string>
+    <string name="visitor_model">Visitor Mode</string>
+    <string name="delete_user">Users that need to be deleted(When registering a user, it is valid. If you do not delete the user, you do not need to fill in)</string>
+    <string name="delete_user_hint">Please enter the user Index to be deleted (the user Index is the user Index after the registered user, the type is int), if more than one is passed please separate with a space</string>
+    <string name="wifi_config_request_server">The server address cannot be empty during WIFI configuration</string>
+    <string name="wifi_config_request_ota">The OTA address cannot be empty during WIFI configuration</string>
+    <string name="wifi_config_request_secret">The communication key cannot be empty during WIFI configuration</string>
+    <string name="user_index_error">User index is not valid</string>
+    <string name="user_secret_error">The user key is not valid</string>
+    <string name="input_user_index">Please fill in the user index</string>
+    <string name="input_user_secret">Please fill in the user access key</string>
+    <string name="register_user_index">The user index returned by registration is：</string>
 </resources>

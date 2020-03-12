@@ -15,4 +15,6 @@ public class UserConst {
 
     public static final String WIFI_CONFIG = "WIFI_CONFIG"; //wifi 配置信息
 
+    public static final String WSPCONFIG = "qnwspconfig"; //wsp 配置信息
+
 }

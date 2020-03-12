@@ -315,6 +315,11 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                 Log.d("ConnectActivity", "秤的连接状态是:" + status);
                 setBleStatus(status);
             }
+
+            @Override
+            public void onScaleEventChange(QNBleDevice qnBleDevice, int scaleEvent) {
+                Log.d("ConnectActivity", "秤返回的事件是:" + scaleEvent);
+            }
         });
     }
 

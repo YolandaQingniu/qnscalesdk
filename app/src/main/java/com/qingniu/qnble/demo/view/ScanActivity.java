@@ -288,20 +288,25 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
         stopScan();
         final QNBleDevice device = this.devices.get(position);
         if (device.isSupportWifi()) {
-            wifiSetDialog.setDialogClickListener(new WIFISetDialog.DialogClickListener() {
-                @Override
-                public void confirmClick(String ssid, String pwd) {
-                    Log.e(TAG, "ssid：" + ssid);
-                    startActivity(ConnectActivity.getCallIntent(ScanActivity.this, mUser, device, new QNWiFiConfig(ssid, pwd)));
-                    wifiSetDialog.dismiss();
-                }
+            //普通双模秤
+            if (device.getDeviceType() == QNDeviceType.SCALE_BLE_DEFAULT) {
+                wifiSetDialog.setDialogClickListener(new WIFISetDialog.DialogClickListener() {
+                    @Override
+                    public void confirmClick(String ssid, String pwd) {
+                        Log.e(TAG, "ssid：" + ssid);
+                        startActivity(ConnectActivity.getCallIntent(ScanActivity.this, mUser, device, new QNWiFiConfig(ssid, pwd)));
+                        wifiSetDialog.dismiss();
+                    }
 
-                @Override
-                public void cancelClick() {
+                    @Override
+                    public void cancelClick() {
 
-                }
-            });
-            wifiSetDialog.show();
+                    }
+                });
+                wifiSetDialog.show();
+            } else if (device.getDeviceType() == QNDeviceType.SCALE_WSP) { // wsp 双模秤
+                startActivity(WspConfigActivity.getIntent(ScanActivity.this, mUser, device));
+            }
         } else {
             // SCALE_BROADCAST
             if (device.getDeviceType() == QNDeviceType.SCALE_BROADCAST) {
