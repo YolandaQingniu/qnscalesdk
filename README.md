@@ -7,6 +7,9 @@
 ### 具体操作文档
 [具体集成说明文档](https://yolandaqingniu.github.io/zh/android/)
 
+### 小程序入口
+[小程序接入文档](https://mp.weixin.qq.com/wxopen/plugindevdoc?appid=wx2a4ca48ed5e96748&token=1470542861&lang=zh_CN)
+
 ### AndroidX适配
 如果进行Androix的适配，[请接入适配Androidx的SDK](https://github.com/YolandaQingniu/qnscalesdkX)
 
