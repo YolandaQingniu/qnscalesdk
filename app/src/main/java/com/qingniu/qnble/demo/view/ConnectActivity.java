@@ -42,7 +42,10 @@ import com.yolanda.health.qnblesdk.out.QNScaleStoreData;
 import com.yolanda.health.qnblesdk.out.QNUser;
 import com.yolanda.health.qnblesdk.out.QNWiFiConfig;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -511,7 +514,8 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         switch (view.getId()) {
             case R.id.stroteDataTest:
                 //{"weight"=>"25.35", "measure_time"=>"2019-05-06 14:02:51", "mac"=>"F0:FE:6B:CB:75:6A", "model_id"=>"0005", "sign"=>"3F828A0207EB762F0D12E1ED5345AF7D6907304A74A45990B254256AC08DAA76EEA778E4B50ACE92D47DA72DD7257F82734C33A56721D797FD932B3741E5C730F2901F7EFAA1755DD0683BABD0959BB1E82201C3B50B3E8A5360A3D57550CF446DC834B8FA2F0D16DA4C0797CC1C308E4253413D4AB90DC4093F8065199ABE8AB0C9D06E3172E511C54C7E5095BB92C753070DC0CEB5D64785C4577952B50465"}
-                /*QNScaleStoreData qnScaleStoreData =new QNScaleStoreData();
+                //注释的代码为从服务器收到的下发数据，通过下面的方法生成测量数据。（此方法只针对双模秤有效）
+                QNScaleStoreData qnScaleStoreData =new QNScaleStoreData();
                 qnScaleStoreData.setUser(createQNUser());
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 try {
@@ -528,7 +532,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                     onReceiveScaleData(qnScaleData);
                 } catch (ParseException e) {
                     e.printStackTrace();
-                }*/
+                }
 
                 break;
             case R.id.setThreshold:
