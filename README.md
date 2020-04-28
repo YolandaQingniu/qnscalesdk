@@ -25,16 +25,16 @@
    ```
 * 在你的module的根目录下的**build.gradle**添加依赖
 	```
-	<!--这里的版本号，2.1.0可以指定为任意release版本-->
-	<!--如果希望一直使用最新版本可以替换 2.1.0 master-SNAPSHOT -->
+	<!--这里的版本号，2.1.1可以指定为任意release版本-->
+	<!--如果希望一直使用最新版本可以替换 2.1.1 master-SNAPSHOT -->
 	dependencies {
 	        ...
-	        compile 'com.github.YolandaQingniu:qnscalesdk:2.1.0'
+	        compile 'com.github.YolandaQingniu:qnscalesdk:2.1.1'
 	}
 	```
 	
 ### Eclipse
-* 下载最新的[jar和so库](https://github.com/YolandaQingniu/qnscalesdk/releases/download/2.1.0/qnsdk-2.1.0-Android.zip)，导入下载的`jar和so库`
+* 下载最新的[jar和so库](https://github.com/YolandaQingniu/qnscalesdk/releases/download/2.1.1/qnsdk-2.1.1-Android.zip)，导入下载的`jar和so库`
 * 在清单文件中申请蓝牙权限、位置权限、网络权限（离线SDK不需要）
     ```
    <!--蓝牙权限-->
