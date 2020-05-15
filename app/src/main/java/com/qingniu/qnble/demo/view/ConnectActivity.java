@@ -52,7 +52,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.qingniu.qnble.demo.R.id.connectBtn;
 
 /**
  * author: yolanda-XY
@@ -77,7 +76,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                 .putExtra(UserConst.WIFI_CONFIG, qnWiFiConfig);
     }
 
-    @BindView(connectBtn)
+    @BindView(R.id.connectBtn)
     Button mConnectBtn;
     @BindView(R.id.statusTv)
     TextView mStatusTv;
@@ -120,7 +119,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         mQNBleApi.setLogListener(new QNLogListener() {
             @Override
             public void onLog(String log) {
-                Log.e("test",log);
+                Log.e("test", log);
             }
         });
         ButterKnife.bind(this);
@@ -290,7 +289,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                 Log.d("ConnectActivity", "收到存储数据");
                 if (storedDataList != null && storedDataList.size() > 0) {
                     QNScaleStoreData data = storedDataList.get(0);
-                    for(int i =0;i<storedDataList.size();i++){
+                    for (int i = 0; i < storedDataList.size(); i++) {
                         Log.d("ConnectActivity", "收到存储数据:" + storedDataList.get(i).getWeight());
                     }
                     QNUser qnUser = createQNUser();
@@ -320,7 +319,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
             }
 
             @Override
-            public void onScaleEventChange(QNBleDevice qnBleDevice, int scaleEvent) {
+            public void onScaleEventChange(QNBleDevice device, int scaleEvent) {
                 Log.d("ConnectActivity", "秤返回的事件是:" + scaleEvent);
             }
         });
@@ -346,13 +345,10 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
     private void initView() {
         mConnectBtn.setOnClickListener(this);
         mBackTv.setOnClickListener(this);
-        listAdapter = new ListAdapter(mDatas,mQNBleApi,createQNUser());
+        listAdapter = new ListAdapter(mDatas, mQNBleApi, createQNUser());
         mListView.setAdapter(listAdapter);
         listAdapter.notifyDataSetChanged();
     }
-
-
-
 
 
     @Override
@@ -393,7 +389,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
 
                 break;
             }
-            case QNScaleStatus.STATE_LINK_LOSS:{
+            case QNScaleStatus.STATE_LINK_LOSS: {
                 stateString = getResources().getString(R.string.connection_disconnected);
                 btnString = getResources().getString(R.string.connect);
                 mIsConnected = false;
@@ -401,22 +397,22 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
             }
             case QNScaleStatus.STATE_START_MEASURE: {
                 stateString = getResources().getString(R.string.measuring);
-                btnString =  getResources().getString(R.string.disconnected);
+                btnString = getResources().getString(R.string.disconnected);
                 break;
             }
             case QNScaleStatus.STATE_REAL_TIME: {
                 stateString = getResources().getString(R.string.real_time_weight_measurement);
-                btnString =  getResources().getString(R.string.disconnected);
+                btnString = getResources().getString(R.string.disconnected);
                 break;
             }
             case QNScaleStatus.STATE_BODYFAT: {
                 stateString = getResources().getString(R.string.impedance_measured);
-                btnString =  getResources().getString(R.string.disconnected);
+                btnString = getResources().getString(R.string.disconnected);
                 break;
             }
             case QNScaleStatus.STATE_HEART_RATE: {
                 stateString = getResources().getString(R.string.measuring_heart_rate);
-                btnString =  getResources().getString(R.string.disconnected);
+                btnString = getResources().getString(R.string.disconnected);
                 break;
             }
             case QNScaleStatus.STATE_MEASURE_COMPLETED: {
@@ -427,12 +423,12 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
             }
             case QNScaleStatus.STATE_WIFI_BLE_START_NETWORK:
                 stateString = getResources().getString(R.string.start_set_wifi);
-                btnString =  getResources().getString(R.string.disconnected);
+                btnString = getResources().getString(R.string.disconnected);
                 Log.d("ConnectActivity", "开始设置WiFi");
                 break;
             case QNScaleStatus.STATE_WIFI_BLE_NETWORK_FAIL:
                 stateString = getResources().getString(R.string.failed_to_set_wifi);
-                btnString =  getResources().getString(R.string.disconnected);
+                btnString = getResources().getString(R.string.disconnected);
                 Log.d("ConnectActivity", "设置WiFi失败");
                 break;
             case QNScaleStatus.STATE_WIFI_BLE_NETWORK_SUCCESS:
@@ -442,7 +438,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             default: {
                 stateString = getResources().getString(R.string.connection_disconnected);
-                btnString =  getResources().getString(R.string.connect);
+                btnString = getResources().getString(R.string.connect);
                 mIsConnected = false;
                 break;
             }
@@ -466,6 +462,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 break;
             case R.id.back_tv:
+                doDisconnect();
                 finish();
                 break;
         }
@@ -541,7 +538,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                     return;
                 }
                 if (null == currentQNScaleData) {
-                    ToastMaker.show(this,getResources().getString(R.string.set_body_fat_change_hint));
+                    ToastMaker.show(this, getResources().getString(R.string.set_body_fat_change_hint));
                     return;
                 }
                 if (!TextUtils.isEmpty(hmacTest.getText().toString())) {

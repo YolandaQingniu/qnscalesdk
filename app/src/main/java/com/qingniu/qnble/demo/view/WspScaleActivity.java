@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.qingniu.qnble.demo.R;
 import com.qingniu.qnble.demo.adapter.ListAdapter;
 import com.qingniu.qnble.demo.util.UserConst;
 import com.qingniu.qnble.utils.QNLogUtils;
@@ -33,7 +34,7 @@ import com.yolanda.health.qnblesdk.out.QNWspConfig;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import com.qingniu.qnble.demo.R;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -350,6 +351,7 @@ public class WspScaleActivity extends AppCompatActivity implements View.OnClickL
                 }
                 break;
             case R.id.back_tv:
+                doDisconnect();
                 finish();
                 break;
         }

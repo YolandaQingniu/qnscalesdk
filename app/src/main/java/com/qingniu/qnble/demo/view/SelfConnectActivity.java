@@ -600,7 +600,7 @@ public class SelfConnectActivity extends AppCompatActivity implements View.OnCli
             }
 
             @Override
-            public void onScaleEventChange(QNBleDevice qnBleDevice, int scaleEvent) {
+            public void onScaleEventChange(QNBleDevice device, int scaleEvent) {
                 Log.d("ConnectActivity", "秤返回的事件是:" + scaleEvent);
             }
         });
@@ -624,7 +624,7 @@ public class SelfConnectActivity extends AppCompatActivity implements View.OnCli
     private void initView() {
         mConnectBtn.setOnClickListener(this);
         mBackTv.setOnClickListener(this);
-        listAdapter = new ListAdapter(mDatas,mQNBleApi,createQNUser());
+        listAdapter = new ListAdapter(mDatas, mQNBleApi, createQNUser());
         mListView.setAdapter(listAdapter);
         listAdapter.notifyDataSetChanged();
     }
@@ -676,11 +676,11 @@ public class SelfConnectActivity extends AppCompatActivity implements View.OnCli
             }
             case QNScaleStatus.STATE_START_MEASURE: {
                 stateString = getResources().getString(R.string.measuring);
-                btnString =getResources().getString(R.string.disconnected);
+                btnString = getResources().getString(R.string.disconnected);
                 break;
             }
             case QNScaleStatus.STATE_REAL_TIME: {
-                stateString =getResources().getString(R.string.real_time_weight_measurement);
+                stateString = getResources().getString(R.string.real_time_weight_measurement);
                 btnString = getResources().getString(R.string.disconnected);
                 break;
             }
@@ -700,7 +700,7 @@ public class SelfConnectActivity extends AppCompatActivity implements View.OnCli
                 break;
             }
             case QNScaleStatus.STATE_WIFI_BLE_START_NETWORK:
-                stateString =getResources().getString(R.string.start_set_wifi);
+                stateString = getResources().getString(R.string.start_set_wifi);
                 btnString = getResources().getString(R.string.disconnected);
                 Log.d(TAG, "开始设置WiFi");
                 break;
@@ -710,8 +710,8 @@ public class SelfConnectActivity extends AppCompatActivity implements View.OnCli
                 Log.d(TAG, "设置WiFi失败");
                 break;
             case QNScaleStatus.STATE_WIFI_BLE_NETWORK_SUCCESS:
-                stateString =getResources().getString(R.string.success_to_set_wifi);
-                btnString =getResources().getString(R.string.disconnected);
+                stateString = getResources().getString(R.string.success_to_set_wifi);
+                btnString = getResources().getString(R.string.disconnected);
                 Log.d(TAG, "设置WiFi成功");
                 break;
             default: {
@@ -740,6 +740,7 @@ public class SelfConnectActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
             case R.id.back_tv:
+                doDisconnect();
                 finish();
                 break;
         }
