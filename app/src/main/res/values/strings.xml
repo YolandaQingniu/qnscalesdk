@@ -176,6 +176,7 @@
     <string name="wifi_config_request_server">The server address cannot be empty during WIFI configuration</string>
     <string name="wifi_config_request_ota">The OTA address cannot be empty during WIFI configuration</string>
     <string name="wifi_config_request_secret">The communication key cannot be empty during WIFI configuration</string>
+    <string name="wifi_config_request_secret_length">The communication key length must be 16 during WIFI configuration</string>
     <string name="user_index_error">User index is not valid</string>
     <string name="user_secret_error">The user key is not valid</string>
     <string name="input_user_index">Please fill in the user index</string>

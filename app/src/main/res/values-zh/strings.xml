@@ -176,6 +176,7 @@
     <string name="wifi_config_request_server">进行WIFI配置时服务器地址不能为空</string>
     <string name="wifi_config_request_ota">进行WIFI配置时OTA地址不能为空</string>
     <string name="wifi_config_request_secret">进行WIFI配置时通讯密钥不能为空</string>
+    <string name="wifi_config_request_secret_length">进行WIFI配置时通讯密钥长度必须为16</string>
     <string name="user_index_error">用户索引不合法</string>
     <string name="user_secret_error">用户密钥不合法</string>
     <string name="input_user_index">请填写用户索引</string>

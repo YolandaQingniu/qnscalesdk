@@ -116,7 +116,6 @@ public class WspConfigActivity extends AppCompatActivity {
     }
 
 
-
     private void initIntent() {
         mUser = getIntent().getParcelableExtra(UserConst.USER);
         qnDevice = getIntent().getParcelableExtra(UserConst.DEVICE);
@@ -254,6 +253,10 @@ public class WspConfigActivity extends AppCompatActivity {
             }
             if (TextUtils.isEmpty(secretKeyEd.getText().toString())) {
                 ToastMaker.show(this, getResources().getString(R.string.wifi_config_request_secret));
+                return;
+            }
+            if (secretKeyEd.getText().toString().length() != 16) {
+                ToastMaker.show(this, getResources().getString(R.string.wifi_config_request_secret_length));
                 return;
             }
             QNWiFiConfig qnWiFiConfig = new QNWiFiConfig();
