@@ -78,6 +78,10 @@
         <activity
             android:name=".view.WspScaleActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.HeightScaleActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

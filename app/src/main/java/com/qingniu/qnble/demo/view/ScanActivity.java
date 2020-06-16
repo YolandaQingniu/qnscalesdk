@@ -306,13 +306,15 @@ public class ScanActivity extends AppCompatActivity implements AdapterView.OnIte
                 wifiSetDialog.show();
             } else if (device.getDeviceType() == QNDeviceType.SCALE_WSP) { // wsp 双模秤
                 startActivity(WspConfigActivity.getIntent(ScanActivity.this, mUser, device));
+            }else if (device.getDeviceType() == QNDeviceType.HEIGHT_SCALE) { // 身高一体机
+                startActivity(HeightScaleActivity.getCallIntent(this, mUser, device));
             }
         } else {
             // SCALE_BROADCAST
             if (device.getDeviceType() == QNDeviceType.SCALE_BROADCAST) {
                 startActivity(BroadcastScaleActivity.getCallIntent(ScanActivity.this, mUser, device));
             } else if (device.getDeviceType() == QNDeviceType.SCALE_KITCHEN) {// SCALE_KITCHEN
-
+                startActivity(kitchenScaleActivity.getCallIntent(ScanActivity.this));
             } else {//SCALE_BLE_DEFAULT
                 //连接设备
                 connectDevice(device);

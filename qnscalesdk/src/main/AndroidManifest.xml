@@ -39,6 +39,11 @@
         <service
             android:name="com.qingniu.scale.wsp.ble.ScaleWspBleService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <!--身高一体机服务-->
+        <service
+            android:name="com.qingniu.heightscale.ble.HeightScaleBleService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>
