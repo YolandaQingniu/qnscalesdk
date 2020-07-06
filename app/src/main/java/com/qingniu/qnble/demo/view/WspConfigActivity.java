@@ -30,6 +30,7 @@ import com.yolanda.health.qnblesdk.out.QNWspConfig;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,6 +64,10 @@ public class WspConfigActivity extends AppCompatActivity {
     EditText userIndexEt;
     @BindView(R.id.userSecretEt)
     EditText userSecretEt;
+    @BindView(R.id.longitudeEdit)
+    EditText longitudeEdit;
+    @BindView(R.id.latitudeEdit)
+    EditText latitudeEdit;
     private User mUser;
 
     private QNBleDevice qnDevice;
@@ -192,7 +197,7 @@ public class WspConfigActivity extends AppCompatActivity {
 
         return mQNBleApi.buildUser(mUser.getUserId(),
                 mUser.getHeight(), mUser.getGender(), mUser.getBirthDay(), mUser.getAthleteType(),
-                userShape, userGoal, mUser.getClothesWeight(), userIndex, userSercret,
+                userShape, userGoal, mUser.getClothesWeight(), userIndex, userSercret, mUser.getQnIndicateConfig(),
 
                 new QNResultCallback() {
                     @Override
@@ -204,6 +209,25 @@ public class WspConfigActivity extends AppCompatActivity {
 
     @OnClick(R.id.swpConfigBtn)
     public void onViewClicked() {
+
+        String latitudeString = latitudeEdit.getText().toString();
+        String longitudeString = longitudeEdit.getText().toString();
+
+        if (!TextUtils.isEmpty(latitudeString)) {
+            if (!checkFormatter(latitudeString)) {
+                ToastMaker.show(this, getResources().getString(R.string.latitude_longitude_error));
+                return;
+            }
+        }
+
+        if (!TextUtils.isEmpty(longitudeString)) {
+            if (!checkFormatter(longitudeString)) {
+                ToastMaker.show(this, getResources().getString(R.string.latitude_longitude_error));
+                return;
+            }
+        }
+
+
         //非访客模式
         if (!visitorCheckBox.isChecked()) {
 
@@ -255,10 +279,6 @@ public class WspConfigActivity extends AppCompatActivity {
                 ToastMaker.show(this, getResources().getString(R.string.wifi_config_request_secret));
                 return;
             }
-            if (secretKeyEd.getText().toString().length() != 16) {
-                ToastMaker.show(this, getResources().getString(R.string.wifi_config_request_secret_length));
-                return;
-            }
             QNWiFiConfig qnWiFiConfig = new QNWiFiConfig();
             qnWiFiConfig.setSsid(ssidEdit.getText().toString());
             qnWiFiConfig.setPwd(wifiPwdEd.getText().toString());
@@ -270,6 +290,16 @@ public class WspConfigActivity extends AppCompatActivity {
 
         qnWspConfig.setCurUser(createQNUser());
 
+        if (!TextUtils.isEmpty(longitudeString) && !TextUtils.isEmpty(latitudeString)) {
+            qnWspConfig.setLatitude(latitudeString);
+            qnWspConfig.setLongitude(longitudeString);
+        }
+
         startActivity(WspScaleActivity.getCallIntent(this, qnDevice, qnWspConfig));
+    }
+
+    private boolean checkFormatter(String content) {
+        Pattern pattern = Pattern.compile("^[+|-][0-9]{3}[.][0-9]{2}$");
+        return pattern.matcher(content).matches();
     }
 }

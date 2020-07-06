@@ -27,6 +27,7 @@ import com.yolanda.health.qnblesdk.constant.QNInfoConst;
 import com.yolanda.health.qnblesdk.constant.QNUnit;
 import com.yolanda.health.qnblesdk.constant.UserGoal;
 import com.yolanda.health.qnblesdk.constant.UserShape;
+import com.yolanda.health.qnblesdk.out.QNIndicateConfig;
 
 import java.util.Date;
 
@@ -91,11 +92,19 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
     EditText user_clothes_edt;
     @BindView(R.id.onlyBroadCast)
     AppCompatCheckBox onlyBroadCast;
+    @BindView(R.id.scale_show_bone)
+    Spinner scaleShowBone;
+    @BindView(R.id.scale_show_muscle)
+    Spinner scaleShowMuscle;
+    @BindView(R.id.scale_show_water)
+    Spinner scaleShowWater;
 
     private Config mBleConfig; //蓝牙配置对象
     private String mGender = "male";//用户性别
     private int mHeight = 172; //用户身高
     private Date mBirthday = null; //用户生日
+
+    private QNIndicateConfig qnIndicateConfig;
 
     private User mUser;
 
@@ -116,6 +125,7 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
     private void initData() {
         mBleConfig = new Config();
         mUser = new User();
+        qnIndicateConfig = new QNIndicateConfig();
     }
 
 
@@ -166,6 +176,56 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
             public void onNothingSelected(AdapterView<?> parent) {
                 mUser.setChoseGoal(UserGoal.GOAL_NONE.getCode());
 
+            }
+        });
+
+        scaleShowBone.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    qnIndicateConfig.setShowBone(true);
+                } else {
+                    qnIndicateConfig.setShowBone(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                qnIndicateConfig.setShowBone(true);
+            }
+        });
+
+        scaleShowMuscle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    qnIndicateConfig.setShowMuscle(true);
+                } else {
+                    qnIndicateConfig.setShowMuscle(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                qnIndicateConfig.setShowMuscle(true);
+            }
+        });
+
+        scaleShowWater.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    qnIndicateConfig.setShowWater(true);
+                } else {
+                    qnIndicateConfig.setShowWater(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                qnIndicateConfig.setShowWater(true);
             }
         });
 
@@ -292,12 +352,12 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
             return true;
         }
         if (clothesWeight < 0) {
-            ToastMaker.show(this,getResources().getString(R.string.input_cloth));
+            ToastMaker.show(this, getResources().getString(R.string.input_cloth));
             return true;
         }
 
         if (userId.isEmpty()) {
-            ToastMaker.show(this,getResources().getString(R.string.user_id_empty));
+            ToastMaker.show(this, getResources().getString(R.string.user_id_empty));
             return true;
         } else if (mUserGenderGrp.getCheckedRadioButtonId() == -1) {
             ToastMaker.show(this, getResources().getString(R.string.select_grander));
@@ -321,6 +381,7 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
         mUser.setGender(mGender);
         mUser.setBirthDay(mBirthday);
         mUser.setClothesWeight(clothesWeight);
+        mUser.setQnIndicateConfig(qnIndicateConfig);
 
         mBleConfig.setDuration(scanTime);
         mBleConfig.setScanOutTime(scanOutTime);

@@ -36,6 +36,11 @@
         <item>Aerobic exercise, such as running</item>
     </string-array>
 
+    <string-array name="choiceArray">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
     <string name="year">year</string>
     <string name="month">month</string>
     <string name="day">day</string>
@@ -176,10 +181,18 @@
     <string name="wifi_config_request_server">The server address cannot be empty during WIFI configuration</string>
     <string name="wifi_config_request_ota">The OTA address cannot be empty during WIFI configuration</string>
     <string name="wifi_config_request_secret">The communication key cannot be empty during WIFI configuration</string>
-    <string name="wifi_config_request_secret_length">The communication key length must be 16 during WIFI configuration</string>
     <string name="user_index_error">User index is not valid</string>
     <string name="user_secret_error">The user key is not valid</string>
     <string name="input_user_index">Please fill in the user index</string>
     <string name="input_user_secret">Please fill in the user access key</string>
     <string name="register_user_index">The user index returned by registration is：</string>
+    <string name="wsp_bow_config">WSP scale indicator display configuration：</string>
+    <string name="wsp_show_bone">Show bone mass</string>
+    <string name="wsp_show_muscle">Show muscle mass</string>
+    <string name="wsp_show_water">Show body moisture</string>
+    <string name="wsp_location_info">location information</string>
+    <string name="longitude">longitude</string>
+    <string name="latitude">latitude</string>
+    <string name="latitude_longitude_desc">Description of latitude and longitude: fill in the format: +123.23 or -123.26. Length 7</string>
+    <string name="latitude_longitude_error">Longitude and latitude format error</string>
 </resources>

@@ -36,6 +36,11 @@
         <item>每周数次有氧型运动，如跑步</item>
     </string-array>
 
+    <string-array name="choiceArray">
+        <item>是</item>
+        <item>否</item>
+    </string-array>
+
     <string name="year">年</string>
     <string name="month">月</string>
     <string name="day">日</string>
@@ -176,10 +181,18 @@
     <string name="wifi_config_request_server">进行WIFI配置时服务器地址不能为空</string>
     <string name="wifi_config_request_ota">进行WIFI配置时OTA地址不能为空</string>
     <string name="wifi_config_request_secret">进行WIFI配置时通讯密钥不能为空</string>
-    <string name="wifi_config_request_secret_length">进行WIFI配置时通讯密钥长度必须为16</string>
     <string name="user_index_error">用户索引不合法</string>
     <string name="user_secret_error">用户密钥不合法</string>
     <string name="input_user_index">请填写用户索引</string>
     <string name="input_user_secret">请填写用户访问秘钥</string>
     <string name="register_user_index">注册返回的用户索引是：</string>
+    <string name="wsp_bow_config">WSP秤端指标显示配置：</string>
+    <string name="wsp_show_bone">显示骨量</string>
+    <string name="wsp_show_muscle">显示肌肉量</string>
+    <string name="wsp_show_water">显示体水分</string>
+    <string name="wsp_location_info">位置信息</string>
+    <string name="longitude">经度</string>
+    <string name="latitude">纬度</string>
+    <string name="latitude_longitude_desc">经纬度说明：填写格式为：+123.23 或者-123.26。长度为7</string>
+    <string name="latitude_longitude_error">经纬度格式错误</string>
 </resources>
