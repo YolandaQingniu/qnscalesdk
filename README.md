@@ -25,16 +25,16 @@
    ```
 * 在你的module的根目录下的**build.gradle**添加依赖
 	```
-	<!--这里的版本号，2.2.1可以指定为任意release版本-->
-	<!--如果希望一直使用最新版本可以替换 2.2.1 master-SNAPSHOT -->
+	<!--这里的版本号，2.3.0-beta1可以指定为任意release版本-->
+	<!--如果希望一直使用最新版本可以替换 2.3.0-beta1 master-SNAPSHOT -->
 	dependencies {
 	        ...
-	        compile 'com.github.YolandaQingniu:qnscalesdk:2.2.1'
+	        compile 'com.github.YolandaQingniu:qnscalesdk:2.3.0-beta1'
 	}
 	```
 	
 ### 本地依赖
-* 下载最新的[jar和so库](https://github.com/YolandaQingniu/qnscalesdk/releases/download/2.2.1/qnsdk-2.2.1-Android.zip)，导入下载的`jar和so库`
+* 下载最新的[jar和so库](https://github.com/YolandaQingniu/qnscalesdk/releases/download/2.3.0-beta1/qnsdk-2.3.0-beta1-Android.zip)，导入下载的`jar和so库`
 * 在清单文件中申请蓝牙权限、位置权限、网络权限（离线SDK不需要）
     ```
    <!--蓝牙权限-->
@@ -66,6 +66,8 @@
    <service android:name="com.qingniu.qnble.scanner.BleScanService" android:permission="android.permission.BIND_JOB_SERVICE"/>
    <service android:name="com.qingniu.scale.measure.ble.ScaleBleService" android:permission="android.permission.BIND_JOB_SERVICE"/>
    <service android:name="com.qingniu.scale.measure.broadcast.ScaleBroadcastService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+   <service android:name="com.qingniu.scale.wsp.ble.ScaleWspBleService" android:permission="android.permission.BIND_JOB_SERVICE" />
+   <service android:name="com.qingniu.scale.measure.broadcast.ScaleFoodBroadcastService" android:permission="android.permission.BIND_JOB_SERVICE" />
     ```
 * SDK中使用到了v4包的资源，开发者项目中需要引入v4包的资源
 
