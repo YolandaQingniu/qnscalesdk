@@ -68,6 +68,8 @@ public class WspConfigActivity extends AppCompatActivity {
     EditText longitudeEdit;
     @BindView(R.id.latitudeEdit)
     EditText latitudeEdit;
+    @BindView(R.id.setUserFlag)
+    CheckBox setUserFlag;
     private User mUser;
 
     private QNBleDevice qnDevice;
@@ -287,8 +289,11 @@ public class WspConfigActivity extends AppCompatActivity {
             qnWspConfig.setOtaUrl(OTAUrlEd.getText().toString());
             qnWspConfig.setEncryption(secretKeyEd.getText().toString());
         }
-
-        qnWspConfig.setCurUser(createQNUser());
+        if (setUserFlag.isChecked()) {
+            qnWspConfig.setCurUser(null);
+        } else {
+            qnWspConfig.setCurUser(createQNUser());
+        }
 
         if (!TextUtils.isEmpty(longitudeString) && !TextUtils.isEmpty(latitudeString)) {
             qnWspConfig.setLatitude(latitudeString);

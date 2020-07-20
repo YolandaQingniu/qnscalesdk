@@ -187,12 +187,18 @@
     <string name="input_user_secret">Please fill in the user access key</string>
     <string name="register_user_index">The user index returned by registration is：</string>
     <string name="wsp_bow_config">WSP scale indicator display configuration：</string>
+    <string name="wsp_show_user_name">Show username</string>
+    <string name="wsp_show_bmi">Show BMI</string>
     <string name="wsp_show_bone">Show bone mass</string>
+    <string name="wsp_show_fat">Show body fat rate</string>
     <string name="wsp_show_muscle">Show muscle mass</string>
-    <string name="wsp_show_water">Show body moisture</string>
+    <string name="wsp_show_water">Show body water</string>
+    <string name="wsp_show_heartrate">Show heart rate</string>
+    <string name="wsp_show_weather">Show weather</string>
     <string name="wsp_location_info">location information</string>
     <string name="longitude">longitude</string>
     <string name="latitude">latitude</string>
     <string name="latitude_longitude_desc">Description of latitude and longitude: fill in the format: +123.23 or -123.26. Length 7</string>
     <string name="latitude_longitude_error">Longitude and latitude format error</string>
+    <string name="only_wifi_no_user">Only configure the network without setting user information</string>
 </resources>

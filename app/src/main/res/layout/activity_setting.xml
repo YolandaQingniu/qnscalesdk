@@ -341,10 +341,56 @@
                 android:orientation="horizontal">
                 <TextView
                     style="@style/user_small_text"
+                    android:text="@string/wsp_show_user_name" />
+
+                <Spinner
+                    android:id="@+id/scale_show_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/choiceArray"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <TextView
+                    style="@style/user_small_text"
+                    android:text="@string/wsp_show_bmi" />
+
+                <Spinner
+                    android:id="@+id/scale_show_bmi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/choiceArray"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <TextView
+                    style="@style/user_small_text"
                     android:text="@string/wsp_show_bone" />
 
                 <Spinner
                     android:id="@+id/scale_show_bone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/choiceArray"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <TextView
+                    style="@style/user_small_text"
+                    android:text="@string/wsp_show_fat" />
+
+                <Spinner
+                    android:id="@+id/scale_show_fat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:entries="@array/choiceArray"/>
@@ -375,6 +421,37 @@
 
                 <Spinner
                     android:id="@+id/scale_show_water"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/choiceArray"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <TextView
+                    style="@style/user_small_text"
+                    android:text="@string/wsp_show_heartrate" />
+
+                <Spinner
+                    android:id="@+id/scale_show_heart_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/choiceArray"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <TextView
+                    style="@style/user_small_text"
+                    android:text="@string/wsp_show_weather" />
+
+                <Spinner
+                    android:id="@+id/scale_show_weather"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:entries="@array/choiceArray"/>

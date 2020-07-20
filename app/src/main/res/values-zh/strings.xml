@@ -187,12 +187,18 @@
     <string name="input_user_secret">请填写用户访问秘钥</string>
     <string name="register_user_index">注册返回的用户索引是：</string>
     <string name="wsp_bow_config">WSP秤端指标显示配置：</string>
+    <string name="wsp_show_user_name">显示用户名</string>
+    <string name="wsp_show_bmi">显示BMI</string>
     <string name="wsp_show_bone">显示骨量</string>
+    <string name="wsp_show_fat">显示体脂率</string>
     <string name="wsp_show_muscle">显示肌肉量</string>
     <string name="wsp_show_water">显示体水分</string>
+    <string name="wsp_show_heartrate">显示心率</string>
+    <string name="wsp_show_weather">显示天气</string>
     <string name="wsp_location_info">位置信息</string>
     <string name="longitude">经度</string>
     <string name="latitude">纬度</string>
     <string name="latitude_longitude_desc">经纬度说明：填写格式为：+123.23 或者-123.26。长度为7</string>
     <string name="latitude_longitude_error">经纬度格式错误</string>
+    <string name="only_wifi_no_user">只配网不设置用户信息</string>
 </resources>

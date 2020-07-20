@@ -98,6 +98,16 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
     Spinner scaleShowMuscle;
     @BindView(R.id.scale_show_water)
     Spinner scaleShowWater;
+    @BindView(R.id.scale_show_user_name)
+    Spinner scaleShowUserName;
+    @BindView(R.id.scale_show_bmi)
+    Spinner scaleShowBmi;
+    @BindView(R.id.scale_show_fat)
+    Spinner scaleShowFat;
+    @BindView(R.id.scale_show_heart_rate)
+    Spinner scaleShowHeartRate;
+    @BindView(R.id.scale_show_weather)
+    Spinner scaleShowWeather;
 
     private Config mBleConfig; //蓝牙配置对象
     private String mGender = "male";//用户性别
@@ -179,6 +189,38 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
             }
         });
 
+        scaleShowUserName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    qnIndicateConfig.setShowUserName(true);
+                } else {
+                    qnIndicateConfig.setShowUserName(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                qnIndicateConfig.setShowUserName(true);
+            }
+        });
+
+        scaleShowBmi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    qnIndicateConfig.setShowBmi(true);
+                } else {
+                    qnIndicateConfig.setShowBmi(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                qnIndicateConfig.setShowBmi(true);
+            }
+        });
+
         scaleShowBone.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
 
@@ -194,6 +236,22 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 qnIndicateConfig.setShowBone(true);
+            }
+        });
+
+        scaleShowFat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    qnIndicateConfig.setShowFat(true);
+                } else {
+                    qnIndicateConfig.setShowFat(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                qnIndicateConfig.setShowFat(true);
             }
         });
 
@@ -226,6 +284,38 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 qnIndicateConfig.setShowWater(true);
+            }
+        });
+
+        scaleShowHeartRate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    qnIndicateConfig.setShowHeartRate(true);
+                } else {
+                    qnIndicateConfig.setShowHeartRate(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                qnIndicateConfig.setShowHeartRate(true);
+            }
+        });
+
+        scaleShowWeather.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    qnIndicateConfig.setShowWeather(true);
+                } else {
+                    qnIndicateConfig.setShowWeather(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                qnIndicateConfig.setShowWeather(true);
             }
         });
 

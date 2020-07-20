@@ -164,6 +164,12 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
             </LinearLayout>
+            <CheckBox
+                android:id="@+id/setUserFlag"
+                android:layout_width="wrap_content"
+                android:text="@string/only_wifi_no_user"
+                android:layout_height="wrap_content" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:padding="10dp"
