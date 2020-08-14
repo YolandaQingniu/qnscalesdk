@@ -162,6 +162,11 @@ public class WspScaleActivity extends AppCompatActivity implements View.OnClickL
             }
 
             @Override
+            public void wspLocationSyncStatus(QNBleDevice device, boolean success) {
+                //bow 秤返回经纬度是否写入成功
+            }
+
+            @Override
             public void onGetUnsteadyWeight(QNBleDevice device, double weight) {
                 Log.d("WspScaleActivity", "体重是:" + weight);
                 mWeightTv.setText(initWeight(weight));

@@ -304,7 +304,7 @@ public class WspConfigActivity extends AppCompatActivity {
     }
 
     private boolean checkFormatter(String content) {
-        Pattern pattern = Pattern.compile("^[+|-][0-9]{3}[.][0-9]{4}$");
+        Pattern pattern = Pattern.compile("^[-+]?\\d{0,3}\\.?\\d+$");
         return pattern.matcher(content).matches();
     }
 }

@@ -201,8 +201,8 @@
                 <EditText
                     android:id="@+id/longitudeEdit"
                     android:layout_width="90dp"
-                    android:hint="+123.4500"
-                    android:text="+123.4500"
+                    android:hint="123.45"
+                    android:text="123.45"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -213,8 +213,8 @@
                 <EditText
                     android:id="@+id/latitudeEdit"
                     android:layout_width="90dp"
-                    android:hint="-056.2300"
-                    android:text="-056.2300"
+                    android:hint="-56.23"
+                    android:text="-56.23"
                     android:layout_height="wrap_content" />
             </LinearLayout>
             <Button
