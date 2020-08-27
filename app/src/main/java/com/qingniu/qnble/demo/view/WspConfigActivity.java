@@ -70,6 +70,8 @@ public class WspConfigActivity extends AppCompatActivity {
     EditText latitudeEdit;
     @BindView(R.id.setUserFlag)
     CheckBox setUserFlag;
+    @BindView(R.id.readSnCheck)
+    CheckBox readSnCheck;
     private User mUser;
 
     private QNBleDevice qnDevice;
@@ -299,6 +301,8 @@ public class WspConfigActivity extends AppCompatActivity {
             qnWspConfig.setLatitude(latitudeString);
             qnWspConfig.setLongitude(longitudeString);
         }
+
+        qnWspConfig.setReadSN(readSnCheck.isChecked());
 
         startActivity(WspScaleActivity.getCallIntent(this, qnDevice, qnWspConfig));
     }

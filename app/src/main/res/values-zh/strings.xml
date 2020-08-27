@@ -201,4 +201,5 @@
     <string name="latitude_longitude_desc">经纬度说明：填写格式为：+123.23 或者-123.26。长度为7</string>
     <string name="latitude_longitude_error">经纬度格式错误</string>
     <string name="only_wifi_no_user">只配网不设置用户信息</string>
+    <string name="read_sn">是否读取SN</string>
 </resources>

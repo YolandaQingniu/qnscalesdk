@@ -201,4 +201,5 @@
     <string name="latitude_longitude_desc">Description of latitude and longitude: fill in the format: +123.23 or -123.26. Length 7</string>
     <string name="latitude_longitude_error">Longitude and latitude format error</string>
     <string name="only_wifi_no_user">Only configure the network without setting user information</string>
+    <string name="read_sn">Whether to read SN</string>
 </resources>

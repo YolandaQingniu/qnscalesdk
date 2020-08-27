@@ -46,6 +46,9 @@ import butterknife.OnClick;
 public class WspScaleActivity extends AppCompatActivity implements View.OnClickListener {
 
 
+    @BindView(R.id.snTextView)
+    TextView snTextView;
+
     public static Intent getCallIntent(Context context, QNBleDevice device, QNWspConfig qnWspConfig) {
         return new Intent(context, WspScaleActivity.class)
                 .putExtra(UserConst.DEVICE, device)
@@ -164,6 +167,12 @@ public class WspScaleActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void wspLocationSyncStatus(QNBleDevice device, boolean success) {
                 //bow 秤返回经纬度是否写入成功
+            }
+
+            @Override
+            public void wspReadSnComplete(QNBleDevice device, String sn) {
+                Log.d("WspScaleActivity", "获取的SN：" + sn);
+                snTextView.setText("SN:"+sn);
             }
 
             @Override
