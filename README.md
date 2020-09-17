@@ -5,7 +5,7 @@
 + -keep class com.qingniu.scale.model.BleScaleData{*;}
 
 ### 具体操作文档
-[具体集成说明文档](https://yolandaqingniu.github.io/zh/)
+[具体集成说明文档](https://yolandaqingniu.gitee.io/sdk-doc/)
 
 ### 小程序入口
 [小程序接入文档](https://mp.weixin.qq.com/wxopen/plugindevdoc?appid=wx2a4ca48ed5e96748&token=1470542861&lang=zh_CN)
@@ -37,13 +37,13 @@
 * 下载最新的[jar和so库](https://github.com/YolandaQingniu/qnscalesdk/releases/download/2.3.0-beta9/qnsdk-2.3.0-beta9-Android.zip)，导入下载的`jar和so库`
 * 在app moudle 下建立libs文件夹，将so库和jar包放入libs 文件夹内。
 *  在app moudle 的gradle文件中增加配置
-
+```
  sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
         }
     }
-    
+```    
  
 * 在清单文件中申请蓝牙权限、位置权限、网络权限（离线SDK不需要）
     ```
@@ -65,6 +65,7 @@
       <uses-permission android:name="android.permission.WAKE_LOCK" />
     ```
 * 需要在**AndroidManifest.xml**注册SDK中的组件：
+
 	```
   <!--qnscalesdk:1.1.3-beta3之前(包含1.1.3-beta3)的版本配置-->
   <service android:name="com.qingniu.qnble.scanner.BleScanService"/>
