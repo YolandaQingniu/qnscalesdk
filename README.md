@@ -35,13 +35,16 @@
 	
 ### 本地依赖
 * 下载最新的[jar和so库](https://github.com/YolandaQingniu/qnscalesdk/releases/download/2.3.0-beta9/qnsdk-2.3.0-beta9-Android.zip)，导入下载的`jar和so库`
-在app moudle 下建立libs文件夹，将so库和jar包放入libs 文件夹内。
-在app moudle 的gradle文件中增加配置
+* 在app moudle 下建立libs文件夹，将so库和jar包放入libs 文件夹内。
+*  在app moudle 的gradle文件中增加配置
+  ```
  sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
         }
     }
+    
+      ```
 * 在清单文件中申请蓝牙权限、位置权限、网络权限（离线SDK不需要）
     ```
    <!--蓝牙权限-->
