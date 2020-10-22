@@ -82,6 +82,10 @@
         <activity
             android:name=".view.HeightScaleActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.SelfMultiDeviceConnectActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

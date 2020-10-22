@@ -616,7 +616,7 @@
                 android:background="@drawable/edittext_background"
                 android:hint="@string/scan_out_time_remind"
                 android:inputType="number"
-                android:text="10000" />
+                android:text="30000" />
 
             <TextView style="@style/divide_line" />
         </LinearLayout>

@@ -202,4 +202,9 @@
     <string name="latitude_longitude_error">Longitude and latitude format error</string>
     <string name="only_wifi_no_user">Only configure the network without setting user information</string>
     <string name="read_sn">Whether to read SN</string>
+    <string name="single_connect">Single device connection</string>
+    <string name="multi_connect">Multi-device connection</string>
+    <string name="sdk_api_measure_multil">Independent management of multi-device connection measurement</string>
+    <string name="current_device_connected">The device is already connected, please do not repeat the connection</string>
+    <string name="clear_data">Clear data</string>
 </resources>
