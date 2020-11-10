@@ -119,7 +119,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         mQNBleApi.setLogListener(new QNLogListener() {
             @Override
             public void onLog(String log) {
-                Log.e("test", log);
+                // Log.e("test", log);
             }
         });
         ButterKnife.bind(this);
@@ -282,6 +282,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                 historyQNScaleData.add(data);
                 Log.d("ConnectActivity", "加密hmac为:" + data.getHmac());
 //                Log.d("ConnectActivity", "收到体脂肪:"+data.getItem(QNIndicator.TYPE_BODYFAT).getValue());
+                doDisconnect();
             }
 
             @Override
@@ -498,6 +499,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void doDisconnect() {
+        mIsConnected = false;
         mQNBleApi.disconnectDevice(mBleDevice, new QNResultCallback() {
             @Override
             public void onResult(int code, String msg) {
@@ -512,17 +514,17 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.stroteDataTest:
                 //{"weight"=>"25.35", "measure_time"=>"2019-05-06 14:02:51", "mac"=>"F0:FE:6B:CB:75:6A", "model_id"=>"0005", "sign"=>"3F828A0207EB762F0D12E1ED5345AF7D6907304A74A45990B254256AC08DAA76EEA778E4B50ACE92D47DA72DD7257F82734C33A56721D797FD932B3741E5C730F2901F7EFAA1755DD0683BABD0959BB1E82201C3B50B3E8A5360A3D57550CF446DC834B8FA2F0D16DA4C0797CC1C308E4253413D4AB90DC4093F8065199ABE8AB0C9D06E3172E511C54C7E5095BB92C753070DC0CEB5D64785C4577952B50465"}
                 //注释的代码为从服务器收到的下发数据，通过下面的方法生成测量数据。（此方法只针对双模秤有效）
-                QNScaleStoreData qnScaleStoreData =new QNScaleStoreData();
+                QNScaleStoreData qnScaleStoreData = new QNScaleStoreData();
                 qnScaleStoreData.setUser(createQNUser());
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 try {
-                    Date date =simpleDateFormat.parse("2019-05-06 14:02:51");
-                    qnScaleStoreData.buildStoreData(25.35,date , "F0:FE:6B:CB:75:6A",
+                    Date date = simpleDateFormat.parse("2019-05-06 14:02:51");
+                    qnScaleStoreData.buildStoreData(25.35, date, "F0:FE:6B:CB:75:6A",
                             "3F828A0207EB762F0D12E1ED5345AF7D6907304A74A45990B254256AC08DAA76EEA778E4B50ACE92D47DA72DD7257F82734C33A56721D797FD932B3741E5C730F2901F7EFAA1755DD0683BABD0959BB1E82201C3B50B3E8A5360A3D57550CF446DC834B8FA2F0D16DA4C0797CC1C308E4253413D4AB90DC4093F8065199ABE8AB0C9D06E3172E511C54C7E5095BB92C753070DC0CEB5D64785C4577952B50465",
                             new QNResultCallback() {
                                 @Override
                                 public void onResult(int code, String msg) {
-                                    Log.e("buildStoreData","code="+code+",msg="+msg);
+                                    Log.e("buildStoreData", "code=" + code + ",msg=" + msg);
                                 }
                             });
                     QNScaleData qnScaleData = qnScaleStoreData.generateScaleData();

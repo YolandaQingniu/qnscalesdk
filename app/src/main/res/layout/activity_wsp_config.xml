@@ -217,11 +217,22 @@
                     android:text="-56.23"
                     android:layout_height="wrap_content" />
             </LinearLayout>
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:id="@+id/readSnCheck"
-                android:text="@string/read_sn"
-                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:id="@+id/readSnCheck"
+                    android:text="@string/read_sn"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:id="@+id/delayScreenOff"
+                    android:text="@string/delay_screen_off"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
             <Button
                 android:id="@+id/swpConfigBtn"
                 android:layout_marginTop="10dp"

@@ -72,6 +72,9 @@ public class WspConfigActivity extends AppCompatActivity {
     CheckBox setUserFlag;
     @BindView(R.id.readSnCheck)
     CheckBox readSnCheck;
+    @BindView(R.id.delayScreenOff)
+    CheckBox delayScreenOff;
+
     private User mUser;
 
     private QNBleDevice qnDevice;
@@ -297,12 +300,15 @@ public class WspConfigActivity extends AppCompatActivity {
             qnWspConfig.setCurUser(createQNUser());
         }
 
+
         if (!TextUtils.isEmpty(longitudeString) && !TextUtils.isEmpty(latitudeString)) {
             qnWspConfig.setLatitude(latitudeString);
             qnWspConfig.setLongitude(longitudeString);
         }
 
         qnWspConfig.setReadSN(readSnCheck.isChecked());
+
+        qnWspConfig.setDelayScreenOff(delayScreenOff.isChecked());
 
         startActivity(WspScaleActivity.getCallIntent(this, qnDevice, qnWspConfig));
     }

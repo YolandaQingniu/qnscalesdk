@@ -207,4 +207,5 @@
     <string name="sdk_api_measure_multil">自主管理多设备连接测量</string>
     <string name="current_device_connected">该设备已连接，请不要重复连接</string>
     <string name="clear_data">清除数据</string>
+    <string name="delay_screen_off">是否延时息屏时间</string>
 </resources>
