@@ -13,7 +13,7 @@
 ### AndroidX适配
 如果进行Androix的适配，[请接入适配Androidx的SDK](https://github.com/YolandaQingniu/qnscalesdkX)
 
-### Android Studio
+### Android Studio 线上依赖
 * 在你工程的根目录下的 **build.gradle**添加**jitpack**支持
    ```
    allprojects {
@@ -33,7 +33,7 @@
 	}
 	```
 	
-### 本地依赖
+### Android Studio  本地依赖
 * 下载最新的[jar和so库](https://github.com/YolandaQingniu/qnscalesdk/releases/download/2.3.0/qnsdk-2.3.0-Android.zip)，导入下载的`jar和so库`
 * 在app moudle 下建立libs文件夹，将so库和jar包放入libs 文件夹内。
 *  在app moudle 的gradle文件中增加配置
