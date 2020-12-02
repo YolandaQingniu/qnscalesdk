@@ -1,4 +1,6 @@
-# 轻牛蓝牙Android SDK 
+# [English document](https://yolandaqingniu.gitee.io/sdk-doc/)
+
+# 轻牛蓝牙Android SDK
 
 ## 快速集成 
 ### 混淆配置(proguard-rules)
