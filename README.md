@@ -90,7 +90,7 @@
 - 如果你的项目是多进程的，建议限制在主进程才进行SDK的初始化
 
 ## 常见问题
-具体使用参考[API文档](https://yolandaqingniu.github.io/)和`Demo`，以下为一些常见问题。
+具体使用参考[API文档](https://yolandaqingniu.gitee.io/sdk-doc/)和`Demo`，以下为一些常见问题。
 
 1. 初始化提示appid错误
     + 检查初始化文件和使用的appid是否匹配
