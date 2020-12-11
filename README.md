@@ -25,6 +25,8 @@
 		}
 	}
    ```
+###  **注意：从低版本升级到2.3.6版本后，SDK的包名有变化，需要将包名中的com.yolanda.health.qnblesdk 改为 com.qn.device
+
 * 在你的module的根目录下的**build.gradle**添加依赖
 	```
 	<!--这里的版本号，2.3.6可以指定为任意release版本-->
