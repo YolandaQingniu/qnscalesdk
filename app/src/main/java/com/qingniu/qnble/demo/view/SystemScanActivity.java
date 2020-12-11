@@ -30,12 +30,12 @@ import com.qingniu.qnble.demo.util.UserConst;
 import com.qingniu.qnble.utils.BleUtils;
 import com.qingniu.qnble.utils.QNLogUtils;
 import com.qingniu.scale.constant.ScaleType;
-import com.yolanda.health.qnblesdk.constant.CheckStatus;
-import com.yolanda.health.qnblesdk.listener.QNResultCallback;
-import com.yolanda.health.qnblesdk.out.QNBleApi;
-import com.yolanda.health.qnblesdk.out.QNBleDevice;
-import com.yolanda.health.qnblesdk.out.QNConfig;
-import com.yolanda.health.qnblesdk.out.QNWiFiConfig;
+import com.qn.device.constant.CheckStatus;
+import com.qn.device.listener.QNResultCallback;
+import com.qn.device.out.QNBleApi;
+import com.qn.device.out.QNBleDevice;
+import com.qn.device.out.QNConfig;
+import com.qn.device.out.QNWiFiConfig;
 
 import java.util.ArrayList;
 import java.util.List;

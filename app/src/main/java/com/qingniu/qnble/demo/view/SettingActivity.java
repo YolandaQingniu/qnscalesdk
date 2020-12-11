@@ -23,11 +23,11 @@ import com.qingniu.qnble.demo.picker.DatePickerDialog;
 import com.qingniu.qnble.demo.picker.HeightPickerDialog;
 import com.qingniu.qnble.demo.util.DateUtils;
 import com.qingniu.qnble.demo.util.ToastMaker;
-import com.yolanda.health.qnblesdk.constant.QNInfoConst;
-import com.yolanda.health.qnblesdk.constant.QNUnit;
-import com.yolanda.health.qnblesdk.constant.UserGoal;
-import com.yolanda.health.qnblesdk.constant.UserShape;
-import com.yolanda.health.qnblesdk.out.QNIndicateConfig;
+import com.qn.device.constant.QNInfoConst;
+import com.qn.device.constant.QNUnit;
+import com.qn.device.constant.UserGoal;
+import com.qn.device.constant.UserShape;
+import com.qn.device.out.QNIndicateConfig;
 
 import java.util.Date;
 

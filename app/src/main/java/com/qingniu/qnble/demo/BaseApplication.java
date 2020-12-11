@@ -4,8 +4,8 @@ import android.app.Application;
 import android.util.Log;
 
 import com.qingniu.qnble.utils.QNLogUtils;
-import com.yolanda.health.qnblesdk.listener.QNResultCallback;
-import com.yolanda.health.qnblesdk.out.QNBleApi;
+import com.qn.device.listener.QNResultCallback;
+import com.qn.device.out.QNBleApi;
 
 /**
  * @author: hekang
