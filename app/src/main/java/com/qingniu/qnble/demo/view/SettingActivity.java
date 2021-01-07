@@ -108,6 +108,8 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
     Spinner scaleShowHeartRate;
     @BindView(R.id.scale_show_weather)
     Spinner scaleShowWeather;
+    @BindView(R.id.scale_show_weightExtend)
+    Spinner scaleShowweightExtend;
 
     private Config mBleConfig; //蓝牙配置对象
     private String mGender = "male";//用户性别
@@ -316,6 +318,23 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 qnIndicateConfig.setShowWeather(true);
+            }
+        });
+
+        scaleShowweightExtend.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    qnIndicateConfig.setWeightExtend(true);
+                } else {
+                    qnIndicateConfig.setWeightExtend(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                qnIndicateConfig.setWeightExtend(true);
             }
         });
 
