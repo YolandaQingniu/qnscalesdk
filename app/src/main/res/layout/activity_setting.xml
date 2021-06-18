@@ -703,6 +703,12 @@
                         android:layout_marginStart="4dp"
                         android:paddingStart="4dp"
                         android:text="st" />
+                    <RadioButton
+                        android:id="@+id/user_unit_st_only"
+                        style="@style/user_radio_button"
+                        android:layout_marginStart="4dp"
+                        android:paddingStart="4dp"
+                        android:text="仅st" />
                 </RadioGroup>
 
             </RelativeLayout>
